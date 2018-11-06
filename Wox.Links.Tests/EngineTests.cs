@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NSubstitute;
+using Wox.Links.Parsers;
 using Wox.Plugin;
 using Xunit;
 
@@ -44,31 +45,6 @@ namespace Wox.Links.Tests
             var actualResults = _engine.Execute(_query);
 
             actualResults.Should().BeSameAs(expectedResult);
-        }
-    }
-
-    public class SaveParserTests
-    {
-        private IStorage _storage;
-
-        public SaveParserTests()
-        {
-            _storage = Substitute.For<IStorage>();
-        }
-        [Fact]
-        public void SaveTerms_ReturnTrueAndProposeToSave()
-        {
-            var saveParser = new SaveParser(_storage);
-
-            saveParser.TryParse(new[] {"--save", "https://some.com/link", "Shortcut"}, out List<Result> results).Should().BeTrue();
-            results.Should().HaveCount(1);
-
-            var result = results[0];
-            result.Title.Should().Be("Save the link as 'Shortcut'");
-            result.SubTitle.Should().Be("https://some.com/link");
-
-            result.Action(new ActionContext());
-            _storage.Received(1).Add("Shortcut", "https://some.com/link");
         }
     }
 }
