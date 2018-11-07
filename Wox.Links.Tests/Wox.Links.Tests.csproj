@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="DeleteParserTests.cs" />
     <Compile Include="EngineTests.cs" />
+    <Compile Include="GetLinkParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveParserTests.cs" />
   </ItemGroup>

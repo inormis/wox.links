@@ -9,8 +9,8 @@ namespace Wox.Links.Tests
 {
     public class SaveParserTests
     {
-        private IStorage _storage;
-        private SaveParser _saveParser;
+        private readonly IStorage _storage;
+        private readonly SaveParser _saveParser;
 
         public SaveParserTests()
         {

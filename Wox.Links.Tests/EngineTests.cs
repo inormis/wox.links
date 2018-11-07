@@ -11,11 +11,11 @@ namespace Wox.Links.Tests
 {
     public class EngineTests
     {
-        private Engine _engine;
+        private readonly Engine _engine;
 
-        private IParser _parser;
+        private readonly IParser _parser;
 
-        private Query _query = new Query
+        private readonly Query _query = new Query
         {
             Terms = new[] {"-save", "https://jira.com", "jj"}
         };

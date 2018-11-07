@@ -53,6 +53,7 @@
     <Compile Include="Link.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Parsers\DeleteParser.cs" />
+    <Compile Include="Parsers\GetLinkParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Parsers\SaveParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
