@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Wox.Links.Extensions;
 using Wox.Plugin;
 
 namespace Wox.Links.Parsers
@@ -40,11 +40,11 @@ namespace Wox.Links.Parsers
             return links
                 .Where(x => shortcut == null ||
                             x.Shortcut.ContainsCaseInsensitive(shortcut) ||
-                            x.Url.ContainsCaseInsensitive(shortcut))
+                            x.Path.ContainsCaseInsensitive(shortcut))
                 .Select(x => new Result
                 {
                     Title = "Delete '" + x.Shortcut + "' link",
-                    SubTitle = x.Url,
+                    SubTitle = x.Path,
                     Action = context =>
                     {
                         _storage.Delete(x.Shortcut);
@@ -53,14 +53,6 @@ namespace Wox.Links.Parsers
                 })
                 .OrderBy(x=>x.Title)
                 .ToArray();
-        }
-    }
-
-    public static class Extensions
-    {
-        public static bool ContainsCaseInsensitive(this string value, string part)
-        {
-            return value.IndexOf(part, StringComparison.InvariantCultureIgnoreCase) != -1;
         }
     }
 }

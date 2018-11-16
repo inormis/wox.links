@@ -5,6 +5,6 @@ namespace Wox.Links
 {
     internal interface IEngine
     {
-        List<Result> Execute(Query query);
+        IEnumerable<Result> Execute(Query query);
     }
 }

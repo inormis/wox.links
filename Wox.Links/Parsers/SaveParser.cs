@@ -7,12 +7,12 @@ namespace Wox.Links.Parsers
 {
     public class SaveParser : IParser
     {
-        static Regex SaveMatch = new Regex(@"--save\b|-s\b", RegexOptions.IgnoreCase);
+        static readonly Regex SaveMatch = new Regex(@"--save\b|-s\b", RegexOptions.IgnoreCase);
 
-        static Regex LinkMatch =
+        static readonly Regex LinkMatch =
             new Regex(@"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$");
 
-        private IStorage _storage;
+        private readonly IStorage _storage;
 
         public SaveParser(IStorage storage)
         {

@@ -2,6 +2,7 @@
 using FluentAssertions;
 using NSubstitute;
 using Wox.Links.Parsers;
+using Wox.Links.Services;
 using Wox.Plugin;
 using Xunit;
 
@@ -17,17 +18,17 @@ namespace Wox.Links.Tests
             new Link
             {
                 Shortcut = "Shortcut",
-                Url = "https://some.com/do"
+                Path = "https://some.com/do"
             },
             new Link
             {
                 Shortcut = "Google",
-                Url = "https://google.com/action"
+                Path = "https://google.com/action"
             },
             new Link
             {
                 Shortcut = "Austriacut",
-                Url = "https://some.com/do"
+                Path = "https://some.com/do"
             }
         };
 
@@ -68,7 +69,7 @@ namespace Wox.Links.Tests
                 new Link
                 {
                     Shortcut = "Shortcut",
-                    Url = "https://jira.com/STF-{0}"
+                    Path = "https://jira.com/STF-{0}"
                 }
             });
 
@@ -89,7 +90,7 @@ namespace Wox.Links.Tests
                 new Link
                 {
                     Shortcut = "Shortcut",
-                    Url = "https://jira.com/STF-{0}"
+                    Path = "https://jira.com/STF-{0}"
                 }
             });
 

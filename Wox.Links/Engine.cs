@@ -6,23 +6,26 @@ namespace Wox.Links
 {
     public class Engine : IEngine
     {
-        private IEnumerable<IParser> _parsers;
+        private readonly IEnumerable<IParser> _parsers;
 
         public Engine(IEnumerable<IParser> parsers)
         {
             _parsers = parsers;
         }
 
-        public List<Result> Execute(Query query)
+        public IEnumerable<Result> Execute(Query query)
         {
             var terms = query.Terms;
             foreach (var parser in _parsers)
             {
-                if (parser.TryParse(terms, out List<Result> results))
-                    return results;
+                if (parser.TryParse(terms, out var results))
+                {
+                    foreach (var result in results)
+                    {
+                        yield return result;
+                    }
+                }
             }
-
-            return new List<Result>();
         }
     }
 }

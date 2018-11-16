@@ -30,16 +30,16 @@ namespace Wox.Links.Tests
                 new Link
                 {
                     Shortcut = "Ad1",
-                    Url = "https://ad1"
+                    Path = "https://ad1"
                 },
                 new Link
                 {
                     Shortcut = "movie",
-                    Url = "https://movie"
+                    Path = "https://movie"
                 },
                 new Link
                 {
-                    Url = "https://gl",
+                    Path = "https://gl",
                     Shortcut = "google"
                 },
             });
@@ -67,17 +67,17 @@ namespace Wox.Links.Tests
                 new Link
                 {
                     Shortcut = "Ad1",
-                    Url = "https://ad1"
+                    Path = "https://ad1"
                 },
                 new Link
                 {
                     Shortcut = "movie",
-                    Url = "https://movie"
+                    Path = "https://movie"
                 },
                 new Link
                 {
                     Shortcut = "Movart",
-                    Url = "https://gl"
+                    Path = "https://gl"
                 },
             });
             _parser.TryParse(new[] {"-d", "mov"}, out List<Result> results).Should().BeTrue();
