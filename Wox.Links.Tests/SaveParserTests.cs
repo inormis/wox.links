@@ -1,19 +1,15 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NSubstitute;
 using Wox.Links.Parsers;
 using Wox.Plugin;
 using Xunit;
 
-namespace Wox.Links.Tests
-{
-    public class SaveParserTests
-    {
-        private readonly IStorage _storage;
+namespace Wox.Links.Tests {
+    public class SaveParserTests {
         private readonly SaveParser _saveParser;
+        private readonly IStorage _storage;
 
-        public SaveParserTests()
-        {
+        public SaveParserTests() {
             _storage = Substitute.For<IStorage>();
             _saveParser = new SaveParser(_storage);
         }
@@ -21,9 +17,8 @@ namespace Wox.Links.Tests
         [Theory]
         [InlineData("--save")]
         [InlineData("-s")]
-        public void SaveTerms_ReturnTrueAndProposeToSave(string key)
-        {
-            _saveParser.TryParse(new[] {key, "https://some.com/link", "Shortcut"}, out List<Result> results).Should()
+        public void SaveTerms_ReturnTrueAndProposeToSave(string key) {
+            _saveParser.TryParse(new[] {key, "https://some.com/link", "Shortcut"}, out var results).Should()
                 .BeTrue();
             results.Should().HaveCount(1);
 
@@ -39,9 +34,8 @@ namespace Wox.Links.Tests
         [InlineData("--save1")]
         [InlineData("-save")]
         [InlineData("-s2")]
-        public void NotSaveKeyWord_ReturnFalse(string key)
-        {
-            _saveParser.TryParse(new[] {key, "https://some.com/link", "Shortcut"}, out List<Result> results).Should()
+        public void NotSaveKeyWord_ReturnFalse(string key) {
+            _saveParser.TryParse(new[] {key, "https://some.com/link", "Shortcut"}, out var results).Should()
                 .BeFalse();
             results.Should().HaveCount(0);
         }

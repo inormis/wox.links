@@ -1,49 +1,40 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NSubstitute;
 using Wox.Links.Parsers;
 using Wox.Plugin;
 using Xunit;
 
-namespace Wox.Links.Tests
-{
-    public class DeleteParserTests
-    {
-        private readonly IStorage _storage;
-        private readonly DeleteParser _parser;
-
-        public DeleteParserTests()
-        {
+namespace Wox.Links.Tests {
+    public class DeleteParserTests {
+        public DeleteParserTests() {
             _storage = Substitute.For<IStorage>();
             _parser = new DeleteParser(_storage);
         }
+
+        private readonly IStorage _storage;
+        private readonly DeleteParser _parser;
 
         [Theory]
         [InlineData("--delete")]
         [InlineData("--remove")]
         [InlineData("-d")]
         [InlineData("-r")]
-        public void DeleteWithShortcut_ReturnAllLinks(string key)
-        {
-            _storage.GetShortcuts().Returns(new[]
-            {
-                new Link
-                {
+        public void DeleteWithShortcut_ReturnAllLinks(string key) {
+            _storage.GetShortcuts().Returns(new[] {
+                new Link {
                     Shortcut = "Ad1",
                     Path = "https://ad1"
                 },
-                new Link
-                {
+                new Link {
                     Shortcut = "movie",
                     Path = "https://movie"
                 },
-                new Link
-                {
+                new Link {
                     Path = "https://gl",
                     Shortcut = "google"
-                },
+                }
             });
-            _parser.TryParse(new[] {key}, out List<Result> results).Should().BeTrue();
+            _parser.TryParse(new[] {key}, out var results).Should().BeTrue();
             results.Should().HaveCount(3);
 
             results[0].Title.Should().Be("Delete 'Ad1' link");
@@ -54,33 +45,38 @@ namespace Wox.Links.Tests
 
             results[2].Title.Should().Be("Delete 'movie' link");
             results[2].SubTitle.Should().Be("https://movie");
-            
+
             results[1].Action(new ActionContext());
             _storage.Received(1).Delete("google");
         }
 
+        [Theory]
+        [InlineData("--del")]
+        [InlineData("-remo")]
+        [InlineData("-re")]
+        public void NotSaveKeyWord_ReturnFalse(string key) {
+            _parser.TryParse(new[] {key, "https://some.com/link", "Shortcut"}, out var results).Should()
+                .BeFalse();
+            results.Should().HaveCount(0);
+        }
+
         [Fact]
-        public void DeleteWithShortcut_ReturnLinksMatchingKeyWork()
-        {
-            _storage.GetShortcuts().Returns(new[]
-            {
-                new Link
-                {
+        public void DeleteWithShortcut_ReturnLinksMatchingKeyWork() {
+            _storage.GetShortcuts().Returns(new[] {
+                new Link {
                     Shortcut = "Ad1",
                     Path = "https://ad1"
                 },
-                new Link
-                {
+                new Link {
                     Shortcut = "movie",
                     Path = "https://movie"
                 },
-                new Link
-                {
+                new Link {
                     Shortcut = "Movart",
                     Path = "https://gl"
-                },
+                }
             });
-            _parser.TryParse(new[] {"-d", "mov"}, out List<Result> results).Should().BeTrue();
+            _parser.TryParse(new[] {"-d", "mov"}, out var results).Should().BeTrue();
             results.Should().HaveCount(2);
 
             results[1].Title.Should().Be("Delete 'movie' link");
@@ -88,20 +84,9 @@ namespace Wox.Links.Tests
 
             results[0].Title.Should().Be("Delete 'Movart' link");
             results[0].SubTitle.Should().Be("https://gl");
-            
+
             results[1].Action(new ActionContext());
             _storage.Received(1).Delete("movie");
-        }
-
-        [Theory]
-        [InlineData("--del")]
-        [InlineData("-remo")]
-        [InlineData("-re")]
-        public void NotSaveKeyWord_ReturnFalse(string key)
-        {
-            _parser.TryParse(new[] {key, "https://some.com/link", "Shortcut"}, out List<Result> results).Should()
-                .BeFalse();
-            results.Should().HaveCount(0);
         }
     }
 }
