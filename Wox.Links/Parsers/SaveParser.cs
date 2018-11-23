@@ -23,23 +23,23 @@ namespace Wox.Links.Parsers {
             }
 
             var saveKeyWord = terms.FirstOrDefault(x => SaveMatch.IsMatch(x));
-            var linkWord = terms.FirstOrDefault(x => LinkMatch.IsMatch(x));
+            var linkPath = terms.FirstOrDefault(x => LinkMatch.IsMatch(x));
 
-            if (saveKeyWord == null || linkWord == null) {
+            if (saveKeyWord == null || linkPath == null) {
                 return false;
             }
 
-            var shortCut = terms.First(x => x != saveKeyWord && x != linkWord);
-            results.Add(CreateResult(shortCut, linkWord));
+            var shortCut = terms.First(x => x != saveKeyWord && x != linkPath);
+            results.Add(CreateResult(shortCut, linkPath));
             return true;
         }
 
-        private Result CreateResult(string shortCut, string linkWord) {
+        private Result CreateResult(string shortCut, string linkPath) {
             return new Result {
                 Title = $"Save the link as \'{shortCut}\'",
-                SubTitle = linkWord,
+                SubTitle = linkPath,
                 Action = context => {
-                    _storage.Set(shortCut, linkWord);
+                    _storage.Set(shortCut, linkPath);
                     return true;
                 }
             };

@@ -73,11 +73,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeleteParserTests.cs" />
     <Compile Include="EngineTests.cs" />
-    <Compile Include="GetLinkParserTests.cs" />
+    <Compile Include="Parsers\DeleteParserTests.cs" />
+    <Compile Include="Parsers\GetLinkParserTests.cs" />
+    <Compile Include="Parsers\SaveParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaveParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wox.Links\Wox.Links.csproj">

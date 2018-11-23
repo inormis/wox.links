@@ -5,7 +5,7 @@ using Wox.Links.Services;
 using Wox.Plugin;
 using Xunit;
 
-namespace Wox.Links.Tests {
+namespace Wox.Links.Tests.Parsers {
     public class GetLinkParserTests {
         public GetLinkParserTests() {
             _storage = Substitute.For<IStorage>();

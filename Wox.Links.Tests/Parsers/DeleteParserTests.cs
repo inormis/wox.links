@@ -4,7 +4,7 @@ using Wox.Links.Parsers;
 using Wox.Plugin;
 using Xunit;
 
-namespace Wox.Links.Tests {
+namespace Wox.Links.Tests.Parsers {
     public class DeleteParserTests {
         public DeleteParserTests() {
             _storage = Substitute.For<IStorage>();

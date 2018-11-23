@@ -27,16 +27,19 @@ namespace Wox.Links.Tests {
 
         [Fact]
         public void ReturnResultFromParser() {
-            var expectedResult = new List<Result>();
+            var expectedResult = new List<Result> {
+                new Result{Title = "Two"},
+                new Result{Title = "Ten"}
+            };
 
-            _parser.TryParse(_query.Terms, out var any)
+            _parser.TryParse(_query.Terms, out _)
                 .Returns(x => {
                     x[1] = expectedResult;
                     return true;
                 });
             var actualResults = _engine.Execute(_query);
 
-            actualResults.Should().BeSameAs(expectedResult);
+            actualResults.Should().BeEquivalentTo(expectedResult);
         }
     }
 }
