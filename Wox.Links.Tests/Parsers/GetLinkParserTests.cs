@@ -28,11 +28,15 @@ namespace Wox.Links.Tests.Parsers {
             new Link {
                 Shortcut = "Austriacut",
                 Path = "https://some.com/do"
+            },
+            new Link {
+                Shortcut = "Jira",
+                Path = "https://some.com/idpf-{0}"
             }
         };
 
         private readonly ILinkProcess _linkProcess;
-
+        
         [Fact]
         public void MatchByName_ReturnFullUrl() {
             _storage.GetShortcuts().Returns(_links);

@@ -1,6 +1,13 @@
-﻿namespace Wox.Links.Services {
+﻿using System.Diagnostics;
+
+namespace Wox.Links.Services {
     public interface ILinkProcess {
-        void Process(string url, params string[] args);
-        void Open(string httpsSomeComDo);
+        void Open(string path);
+    }
+
+    class LinkProcess : ILinkProcess {
+        public void Open(string path) {
+            Process.Start(path);
+        }
     }
 }

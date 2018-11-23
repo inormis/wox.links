@@ -78,6 +78,7 @@
     <Compile Include="Parsers\GetLinkParserTests.cs" />
     <Compile Include="Parsers\SaveParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StartupTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wox.Links\Wox.Links.csproj">

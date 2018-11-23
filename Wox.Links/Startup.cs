@@ -1,5 +1,7 @@
 ﻿using System.Configuration;
 using Autofac;
+using Wox.Links.Parsers;
+using Wox.Links.Services;
 using Wox.Plugin;
 
 namespace Wox.Links {
@@ -11,6 +13,11 @@ namespace Wox.Links {
             container.RegisterInstance(pluginInitContext).AsSelf();
             container.RegisterType<Engine>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<SettingsProvider>().AsImplementedInterfaces().SingleInstance();
+            container.RegisterType<GetLinkParser>().As<IParser>().SingleInstance();
+            container.RegisterType<SaveParser>().As<IParser>().SingleInstance();
+            container.RegisterType<DeleteParser>().As<IParser>().SingleInstance();
+            container.RegisterType<Storage>().As<IStorage>().SingleInstance();
+            container.RegisterType<LinkProcess>().As<ILinkProcess>().SingleInstance();
             _container = container.Build();
         }
 
