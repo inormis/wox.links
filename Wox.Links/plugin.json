@@ -1,0 +1,12 @@
+{
+    "ID":"CEA0FDF0021B4085823D60DC76F28844",
+    "ActionKeyword":"",
+    "Name":"Wox Links",
+    "Description":"Links/Shortcuts organiyer",
+    "Author":"Artiom",
+    "Version":"1.0.0",
+    "Language":"csharp",
+    "Website":"https://github.com/Wox-launcher/Wox",
+    "ExecuteFileName":"Wox.Plugin.Links.dll",
+    "IcoPath":"app.png"
+}

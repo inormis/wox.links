@@ -7,9 +7,6 @@ namespace Wox.Links.Parsers {
     public class SaveParser : IParser {
         private static readonly Regex SaveMatch = new Regex(@"--save\b|-s\b", RegexOptions.IgnoreCase);
 
-        private static readonly Regex LinkMatch =
-            new Regex(@"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$");
-
         private readonly IStorage _storage;
 
         public SaveParser(IStorage storage) {
@@ -23,14 +20,13 @@ namespace Wox.Links.Parsers {
             }
 
             var saveKeyWord = terms.FirstOrDefault(x => SaveMatch.IsMatch(x));
-            var linkPath = terms.FirstOrDefault(x => LinkMatch.IsMatch(x));
-
-            if (saveKeyWord == null || linkPath == null) {
+            if (saveKeyWord == null)
                 return false;
-            }
 
-            var shortCut = terms.First(x => x != saveKeyWord && x != linkPath);
-            results.Add(CreateResult(shortCut, linkPath));
+            var shortcut = terms[1];
+            var linkPath = terms[2];
+
+            results.Add(CreateResult(shortcut, linkPath));
             return true;
         }
 
