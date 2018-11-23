@@ -34,12 +34,15 @@ namespace Wox.Links.Parsers {
 
         private Result Create(Link x, string arg) {
             var url = Format(x.Path, arg);
+            var canOpenLink = CanOpenLink(url);
+            var description = string.IsNullOrEmpty(x.Description) ? "" : FormatDescription(x.Description, arg);
             return new Result {
-                Title = string.IsNullOrEmpty(x.Description) ? x.Shortcut : FormatDescription(x.Description, arg),
+                Title = $"[{x.Shortcut}] {description}",
                 SubTitle = FormatDescription(x.Path, arg),
                 Action = context => {
-                    _linkProcess.Open(url);
-                    return CanOpenLink(url);
+                    if (canOpenLink)
+                        _linkProcess.Open(url);
+                    return canOpenLink;
                 }
             };
         }
@@ -49,6 +52,7 @@ namespace Wox.Links.Parsers {
                 return format;
             return format?.Replace("@@", arg);
         }
+
         private static string FormatDescription(string format, string arg) {
             if (string.IsNullOrWhiteSpace(arg))
                 arg = "{Parameter is missing}";
