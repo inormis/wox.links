@@ -25,17 +25,18 @@ namespace Wox.Links.Parsers {
 
             var shortcut = terms[1];
             var linkPath = terms[2];
+            var description = terms.Length > 2 ? terms[3] : "";
 
-            results.Add(CreateResult(shortcut, linkPath));
+            results.Add(CreateResult(shortcut, linkPath, description));
             return true;
         }
 
-        private Result CreateResult(string shortCut, string linkPath) {
+        private Result CreateResult(string shortCut, string linkPath, string description) {
             return new Result {
                 Title = $"Save the link as \'{shortCut}\'",
                 SubTitle = linkPath,
                 Action = context => {
-                    _storage.Set(shortCut, linkPath);
+                    _storage.Set(shortCut, linkPath, description);
                     return true;
                 }
             };

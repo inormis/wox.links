@@ -8,7 +8,7 @@ using Wox.Plugin;
 
 namespace Wox.Links {
     public interface IStorage {
-        void Set(string shortcut, string url);
+        void Set(string shortcut, string url, string description);
 
         Link[] GetShortcuts();
 
@@ -20,7 +20,7 @@ namespace Wox.Links {
         private string _directory;
         private readonly Dictionary<string, Link> _links;
 
-        public string Path => System.IO.Path.Combine(_directory??"", "links.json");
+        public string Path => System.IO.Path.Combine(_directory ?? "", "links.json");
 
         public Storage(PluginInitContext context) {
             _context = context;
@@ -38,10 +38,11 @@ namespace Wox.Links {
             return new Dictionary<string, Link>();
         }
 
-        public void Set(string shortcut, string url) {
+        public void Set(string shortcut, string url, string description) {
             _links[shortcut] = new Link {
                 Path = url,
-                Shortcut = shortcut
+                Shortcut = shortcut,
+                Description = description
             };
             Save();
         }

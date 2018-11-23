@@ -25,14 +25,18 @@ namespace Wox.Links.Parsers {
             var key = terms.First();
             var links = _storage.GetShortcuts().Where(x => x.Shortcut.ContainsCaseInsensitive(key)).ToArray();
 
-            results.AddRange(links.Select(link => Create(link, terms.Skip(1).ToArray())));
+            results.AddRange(links.Select(link => {
+                string[] args = terms.Skip(1).ToArray();
+                return Create(link, args.FirstOrDefault());
+            }));
             return true;
         }
 
-        private Result Create(Link x, string[] args) {
-            var url = args.Length == 0 ? x.Path : string.Format(x.Path, args);
+        private Result Create(Link x, string arg) {
+            var url = Format(x.Path, arg);
             return new Result {
-                Title = url,
+                Title = string.IsNullOrEmpty(x.Description) ? x.Shortcut : FormatDescription(x.Description, arg),
+                SubTitle = FormatDescription(x.Path, arg),
                 Action = context => {
                     _linkProcess.Open(url);
                     return CanOpenLink(url);
@@ -40,8 +44,19 @@ namespace Wox.Links.Parsers {
             };
         }
 
+        private static string Format(string format, string arg) {
+            if (string.IsNullOrWhiteSpace(arg) && format.Contains("@@"))
+                return format;
+            return format?.Replace("@@", arg);
+        }
+        private static string FormatDescription(string format, string arg) {
+            if (string.IsNullOrWhiteSpace(arg))
+                arg = "{Parameter is missing}";
+            return format?.Replace("@@", arg);
+        }
+
         private static bool CanOpenLink(string url) {
-            return !Regex.IsMatch(url, @"\{\d\}");
+            return !url.Contains("@@");
         }
     }
 }

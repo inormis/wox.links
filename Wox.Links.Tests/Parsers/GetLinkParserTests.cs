@@ -27,11 +27,11 @@ namespace Wox.Links.Tests.Parsers {
             },
             new Link {
                 Shortcut = "Austriacut",
-                Path = "https://some.com/do"
+                Path = "https://austria.com/"
             },
             new Link {
                 Shortcut = "Jira",
-                Path = "https://some.com/idpf-{0}"
+                Path = "https://some.com/idpf-@@"
             }
         };
 
@@ -45,15 +45,11 @@ namespace Wox.Links.Tests.Parsers {
                 .BeTrue();
             results.Should().HaveCount(2);
 
+            results[0].Title.Should().Be("Shortcut");
+            results[0].SubTitle.Should().Be("https://some.com/do");
 
-            results[0].Title.Should().Be("https://some.com/do");
-            results[0].SubTitle.Should().BeNull();
-
-            results[1].Title.Should().Be("https://some.com/do");
-            results[1].SubTitle.Should().BeNull();
-
-            results[1].Action(new ActionContext()).Should().BeTrue();
-            _linkProcess.Received(1).Open("https://some.com/do");
+            results[1].Title.Should().Be("Austriacut");
+            results[1].SubTitle.Should().Be("https://austria.com/");
         }
 
         [Fact]
@@ -61,16 +57,18 @@ namespace Wox.Links.Tests.Parsers {
             _storage.GetShortcuts().Returns(new[] {
                 new Link {
                     Shortcut = "Shortcut",
-                    Path = "https://jira.com/STF-{0}"
+                    Path = "https://jira.com/STF-@@",
+                    Description = "Open IDPF-@@ ticket"
                 }
             });
 
-            _saveParser.TryParse(new[] {"cut", "1332"}, out var results)
+            _saveParser.TryParse(new[] {"cut", "8700"}, out var results)
                 .Should().BeTrue();
-            results.Should().HaveCount(1);
 
-            results[0].Title.Should().Be("https://jira.com/STF-1332");
-            results[0].SubTitle.Should().BeNull();
+
+            results[0].Title.Should().Be("Open IDPF-8700 ticket");
+            results[0].SubTitle.Should().Be("https://jira.com/STF-8700");
+            results[0].Action(new ActionContext()).Should().BeTrue();
         }
 
         [Fact]
@@ -78,7 +76,8 @@ namespace Wox.Links.Tests.Parsers {
             _storage.GetShortcuts().Returns(new[] {
                 new Link {
                     Shortcut = "Shortcut",
-                    Path = "https://jira.com/STF-{0}"
+                    Path = "https://jira.com/STF-@@",
+                    Description = "Open IDPF-@@ ticket"
                 }
             });
 
@@ -86,8 +85,8 @@ namespace Wox.Links.Tests.Parsers {
                 .Should().BeTrue();
 
 
-            results[0].Title.Should().Be("https://jira.com/STF-{0}");
-            results[0].SubTitle.Should().BeNull();
+            results[0].Title.Should().Be("Open IDPF-{Parameter is missing} ticket");
+            results[0].SubTitle.Should().Be("https://jira.com/STF-{Parameter is missing}");
             results[0].Action(new ActionContext()).Should().BeFalse();
         }
     }
