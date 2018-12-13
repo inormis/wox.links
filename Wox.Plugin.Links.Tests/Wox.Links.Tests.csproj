@@ -85,6 +85,10 @@
       <Project>{b16a909b-e908-4bdb-baa9-a26ea349c2e5}</Project>
       <Name>Wox.Links</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Wox.Plugin.Links\Wox.Links.csproj">
+      <Project>{b16a909b-e908-4bdb-baa9-a26ea349c2e5}</Project>
+      <Name>Wox.Links</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

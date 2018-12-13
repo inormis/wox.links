@@ -7,8 +7,8 @@
     <ProjectGuid>{B16A909B-E908-4BDB-BAA9-A26EA349C2E5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wox.Plugin.Links</RootNamespace>
-    <AssemblyName>Wox.Plugin.Links</AssemblyName>
+    <RootNamespace>Wox.Plugin.Keepass</RootNamespace>
+    <AssemblyName>Wox.Plugin.Keepass</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\Users\akuci\AppData\Local\Wox\app-1.3.524\Plugins\Wox.Plugin.Links</OutputPath>
+    <OutputPath>C:\Users\akuci\AppData\Local\Wox\app-1.3.524\Plugins\Wox.Plugin.Keepass</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,7 +60,8 @@
     <Compile Include="Parsers\DeleteParser.cs" />
     <Compile Include="Parsers\GetLinkParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
-    <Compile Include="Parsers\SaveParser.cs" />
+    <Compile Include="Parsers\KeepassParser.cs" />
+    <Compile Include="Parsers\RunParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ILinkProcess.cs" />
     <Compile Include="Startup.cs" />
@@ -75,10 +76,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
+           Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+      -->
 </Project>

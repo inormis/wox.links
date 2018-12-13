@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wox.Links", "Wox.Links\Wox.Links.csproj", "{B16A909B-E908-4BDB-BAA9-A26EA349C2E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wox.Plugins.Keepass", "Wox.Plugin.Keepass\Wox.Plugins.Keepass.csproj", "{B16A909B-E908-4BDB-BAA9-A26EA349C2E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wox.Links.Tests", "Wox.Links.Tests\Wox.Links.Tests.csproj", "{9057990E-9C3A-4548-B6FB-F7CC88F9B966}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wox.Links", "Wox.Plugin.Links\Wox.Links.csproj", "{B16A909B-E908-4BDB-BAA9-A26EA349C2E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wox.Links.Tests", "Wox.Plugin.Links.Tests\Wox.Links.Tests.csproj", "{9057990E-9C3A-4548-B6FB-F7CC88F9B966}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

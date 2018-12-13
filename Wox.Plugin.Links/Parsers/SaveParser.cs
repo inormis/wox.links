@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Wox.Plugin;
@@ -25,15 +26,17 @@ namespace Wox.Links.Parsers {
 
             var shortcut = terms[1];
             var linkPath = terms[2];
-            var description = terms.Length > 2 ? terms[3] : "";
+            var description = terms.Length > 2 ? string.Join(" ", terms.Skip(3)) : "";
 
             results.Add(CreateResult(shortcut, linkPath, description));
             return true;
         }
 
         private Result CreateResult(string shortCut, string linkPath, string description) {
+            Debug.WriteLine(shortCut + " => " + description);
+
             return new Result {
-                Title = $"Save the link as \'{shortCut}\'",
+                Title = $"Save the link as \'{shortCut}\': \'{description}\'",
                 SubTitle = linkPath,
                 Action = context => {
                     _storage.Set(shortCut, linkPath, description);
