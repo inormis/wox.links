@@ -23,7 +23,7 @@ namespace Wox.Links.Parsers {
             }
 
             var key = terms.First();
-            var links = _storage.GetShortcuts().Where(x => x.Shortcut.ContainsCaseInsensitive(key)).ToArray();
+            var links = _storage.GetShortcuts().Where(x => x.Shortcut.MatchShortcut(key)).ToArray();
 
             results.AddRange(links.Select(link => {
                 string[] args = terms.Skip(1).ToArray();

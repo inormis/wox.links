@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B16A909B-E908-4BDB-BAA9-A26EA349C2E5}</ProjectGuid>
+    <ProjectGuid>{B16A9A9B-4900-4000-BAA9-A26EA349C2E5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Wox.Plugin.Keepass</RootNamespace>

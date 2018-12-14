@@ -19,19 +19,23 @@ namespace Wox.Links.Tests.Parsers {
         private readonly Link[] _links = {
             new Link {
                 Shortcut = "Shortcut",
-                Path = "https://some.com/do"
+                Path = "https://some.com/do",
+                Description = "Description 1"
             },
             new Link {
-                Shortcut = "Google",
-                Path = "https://google.com/action"
+                Shortcut = "GoogleAction",
+                Path = "https://google.com/action",
+                Description = "Description 2"
             },
             new Link {
-                Shortcut = "Austriacut",
-                Path = "https://austria.com/"
+                Shortcut = "AustriaCut",
+                Path = "https://austria.com/",
+                Description = "Description 3"
             },
             new Link {
                 Shortcut = "Jira",
-                Path = "https://some.com/idpf-@@"
+                Path = "https://some.com/idpf-@@",
+                Description = "Description 4"
             }
         };
 
@@ -45,11 +49,30 @@ namespace Wox.Links.Tests.Parsers {
                 .BeTrue();
             results.Should().HaveCount(2);
 
-            results[0].Title.Should().Be("Shortcut");
+            results[0].Title.Should().Be("[Shortcut] Description 1");
             results[0].SubTitle.Should().Be("https://some.com/do");
 
-            results[1].Title.Should().Be("Austriacut");
+            results[1].Title.Should().Be("[AustriaCut] Description 3");
             results[1].SubTitle.Should().Be("https://austria.com/");
+        }
+        
+        [Fact]
+        public void InputIsWordWithCapitalCase_MatchByNameSplitByCapitalCases() {
+            _storage.GetShortcuts().Returns(_links);
+
+            _saveParser.TryParse(new[] {"GA"}, out var results).Should()
+                .BeTrue();
+            results.Should().HaveCount(1);
+
+            results[0].Title.Should().StartWith("[GoogleAction]");
+        }
+        [Fact]
+        public void InputIsWordWithCapitalCase_IgnoreMatchesOfLowerCase() {
+            _storage.GetShortcuts().Returns(_links);
+
+            _saveParser.TryParse(new[] {"GC"}, out var results).Should()
+                .BeTrue();
+            results.Should().BeEmpty();
         }
 
         [Fact]
@@ -66,7 +89,7 @@ namespace Wox.Links.Tests.Parsers {
                 .Should().BeTrue();
 
 
-            results[0].Title.Should().Be("Open IDPF-8700 ticket");
+            results[0].Title.Should().Be("[Shortcut] Open IDPF-8700 ticket");
             results[0].SubTitle.Should().Be("https://jira.com/STF-8700");
             results[0].Action(new ActionContext()).Should().BeTrue();
         }
@@ -85,7 +108,7 @@ namespace Wox.Links.Tests.Parsers {
                 .Should().BeTrue();
 
 
-            results[0].Title.Should().Be("Open IDPF-{Parameter is missing} ticket");
+            results[0].Title.Should().Be("[Shortcut] Open IDPF-{Parameter is missing} ticket");
             results[0].SubTitle.Should().Be("https://jira.com/STF-{Parameter is missing}");
             results[0].Action(new ActionContext()).Should().BeFalse();
         }
