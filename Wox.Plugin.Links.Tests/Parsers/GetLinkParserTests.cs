@@ -40,7 +40,27 @@ namespace Wox.Links.Tests.Parsers {
         };
 
         private readonly ILinkProcess _linkProcess;
-        
+
+        [Fact]
+        public void InputIsWordWithCapitalCase_IgnoreMatchesOfLowerCase() {
+            _storage.GetShortcuts().Returns(_links);
+
+            _saveParser.TryParse(new[] {"GC"}, out var results).Should()
+                .BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void InputIsWordWithCapitalCase_MatchByNameSplitByCapitalCases() {
+            _storage.GetShortcuts().Returns(_links);
+
+            _saveParser.TryParse(new[] {"GA"}, out var results).Should()
+                .BeTrue();
+            results.Should().HaveCount(1);
+
+            results[0].Title.Should().StartWith("[GoogleAction]");
+        }
+
         [Fact]
         public void MatchByName_ReturnFullUrl() {
             _storage.GetShortcuts().Returns(_links);
@@ -54,25 +74,6 @@ namespace Wox.Links.Tests.Parsers {
 
             results[1].Title.Should().Be("[AustriaCut] Description 3");
             results[1].SubTitle.Should().Be("https://austria.com/");
-        }
-        
-        [Fact]
-        public void InputIsWordWithCapitalCase_MatchByNameSplitByCapitalCases() {
-            _storage.GetShortcuts().Returns(_links);
-
-            _saveParser.TryParse(new[] {"GA"}, out var results).Should()
-                .BeTrue();
-            results.Should().HaveCount(1);
-
-            results[0].Title.Should().StartWith("[GoogleAction]");
-        }
-        [Fact]
-        public void InputIsWordWithCapitalCase_IgnoreMatchesOfLowerCase() {
-            _storage.GetShortcuts().Returns(_links);
-
-            _saveParser.TryParse(new[] {"GC"}, out var results).Should()
-                .BeTrue();
-            results.Should().BeEmpty();
         }
 
         [Fact]

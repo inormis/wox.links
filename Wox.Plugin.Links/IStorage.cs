@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.WebSockets;
 using Newtonsoft.Json;
 using Wox.Plugin;
 
@@ -15,12 +13,10 @@ namespace Wox.Links {
         void Delete(string shortcut);
     }
 
-    class Storage : IStorage {
-        private PluginInitContext _context;
-        private string _directory;
+    internal class Storage : IStorage {
+        private readonly PluginInitContext _context;
+        private readonly string _directory;
         private readonly Dictionary<string, Link> _links;
-
-        public string Path => System.IO.Path.Combine(_directory ?? "", "links.json");
 
         public Storage(PluginInitContext context) {
             _context = context;
@@ -29,14 +25,7 @@ namespace Wox.Links {
             _links = Load();
         }
 
-        private Dictionary<string, Link> Load() {
-            if (File.Exists(Path)) {
-                var links = JsonConvert.DeserializeObject<Link[]>(File.ReadAllText(Path));
-                return links.ToDictionary(x => x.Shortcut, x => x);
-            }
-
-            return new Dictionary<string, Link>();
-        }
+        public string Path => System.IO.Path.Combine(_directory ?? "", "links.json");
 
         public void Set(string shortcut, string url, string description) {
             _links[shortcut] = new Link {
@@ -54,6 +43,15 @@ namespace Wox.Links {
         public void Delete(string shortcut) {
             _links.Remove(shortcut);
             Save();
+        }
+
+        private Dictionary<string, Link> Load() {
+            if (File.Exists(Path)) {
+                var links = JsonConvert.DeserializeObject<Link[]>(File.ReadAllText(Path));
+                return links.ToDictionary(x => x.Shortcut, x => x);
+            }
+
+            return new Dictionary<string, Link>();
         }
 
         private void Save() {

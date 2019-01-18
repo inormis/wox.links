@@ -28,8 +28,8 @@ namespace Wox.Links.Tests {
         [Fact]
         public void ReturnResultFromParser() {
             var expectedResult = new List<Result> {
-                new Result{Title = "Two"},
-                new Result{Title = "Ten"}
+                new Result {Title = "Two"},
+                new Result {Title = "Ten"}
             };
 
             _parser.TryParse(_query.Terms, out _)

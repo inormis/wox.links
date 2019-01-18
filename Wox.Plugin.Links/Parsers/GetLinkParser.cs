@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using Wox.Links.Extensions;
 using Wox.Links.Services;
 using Wox.Plugin;
+using Wox.Plugins.Common;
 
 namespace Wox.Links.Parsers {
     public class GetLinkParser : IParser {
@@ -26,7 +25,7 @@ namespace Wox.Links.Parsers {
             var links = _storage.GetShortcuts().Where(x => x.Shortcut.MatchShortcut(key)).ToArray();
 
             results.AddRange(links.Select(link => {
-                string[] args = terms.Skip(1).ToArray();
+                var args = terms.Skip(1).ToArray();
                 return Create(link, args.FirstOrDefault());
             }));
             return true;
@@ -40,22 +39,28 @@ namespace Wox.Links.Parsers {
                 Title = $"[{x.Shortcut}] {description}",
                 SubTitle = FormatDescription(x.Path, arg),
                 Action = context => {
-                    if (canOpenLink)
+                    if (canOpenLink) {
                         _linkProcess.Open(url);
+                    }
+
                     return canOpenLink;
                 }
             };
         }
 
         private static string Format(string format, string arg) {
-            if (string.IsNullOrWhiteSpace(arg) && format.Contains("@@"))
+            if (string.IsNullOrWhiteSpace(arg) && format.Contains("@@")) {
                 return format;
+            }
+
             return format?.Replace("@@", arg);
         }
 
         private static string FormatDescription(string format, string arg) {
-            if (string.IsNullOrWhiteSpace(arg))
+            if (string.IsNullOrWhiteSpace(arg)) {
                 arg = "{Parameter is missing}";
+            }
+
             return format?.Replace("@@", arg);
         }
 

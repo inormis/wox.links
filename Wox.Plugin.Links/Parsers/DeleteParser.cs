@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Wox.Links.Extensions;
 using Wox.Plugin;
+using Wox.Plugins.Common;
 
 namespace Wox.Links.Parsers {
     public class DeleteParser : IParser {

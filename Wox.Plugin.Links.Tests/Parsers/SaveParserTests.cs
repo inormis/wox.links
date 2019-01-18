@@ -15,26 +15,26 @@ namespace Wox.Links.Tests.Parsers {
         }
 
         [Theory]
-        [InlineData("--save")]
-        [InlineData("-s")]
+        [InlineData("-l")]
+        [InlineData("link")]
         public void SaveTerms_ReturnTrueAndProposeToSave(string key) {
-            _saveParser.TryParse(new[] {key, "Shortcut", "https://some.com/link-{0}", "my home page"}, out var results)
+            _saveParser.TryParse(new[] {key, "Shortcut", "https://some.com/link-{0}", "my description"}, out var results)
                 .Should()
                 .BeTrue();
             results.Should().HaveCount(1);
 
             var result = results[0];
-            result.Title.Should().Be("Save the link as 'Shortcut'");
+            result.Title.Should().Be("Save the link as 'Shortcut': 'my description'");
             result.SubTitle.Should().Be("https://some.com/link-{0}");
 
             result.Action(new ActionContext());
-            _storage.Received(1).Set("Shortcut", "https://some.com/link-{0}", "my home page");
+            _storage.Received(1).Set("Shortcut", "https://some.com/link-{0}", "my description");
         }
 
         [Theory]
-        [InlineData("--save1")]
-        [InlineData("-save")]
-        [InlineData("-s2")]
+        [InlineData("link1")]
+        [InlineData("-link")]
+        [InlineData("-l2")]
         public void NotSaveKeyWord_ReturnFalse(string key) {
             _saveParser.TryParse(new[] {key, "https://some.com/link", "Shortcut"}, out var results).Should()
                 .BeFalse();

@@ -1,12 +1,12 @@
 {
-    "ID":"CEA0FDF000000085823D618A095B3C44",
+    "ID":"CAA290F0021B4085823D60DC76F28844",
     "ActionKeyword":"kee",
-    "Name":"Wox Links",
-    "Description":"Links/Shortcuts organiyer",
+    "Name":"Wox KeePass",
+    "Description":"KeePass launcher",
     "Author":"Artiom",
     "Version":"1.0.0",
     "Language":"csharp",
     "Website":"https://github.com/Wox-launcher/Wox",
-    "ExecuteFileName":"Wox.Plugin.Links.dll",
+    "ExecuteFileName":"Wox.Plugin.KeePass.dll",
     "IcoPath":"app.png"
 }

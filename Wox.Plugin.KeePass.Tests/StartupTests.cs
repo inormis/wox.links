@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Wox.Links.Parsers;
 using Wox.Plugin;
+using Wox.Plugins.KeePass.Parsers;
 using Xunit;
 
-namespace Wox.Links.Tests {
+namespace Wox.Plugins.KeePass.Tests {
     public class StartupTests {
         [Fact]
         public void Setup() {

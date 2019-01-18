@@ -1,9 +1,10 @@
 ﻿using System.Configuration;
 using Autofac;
-using Wox.Plugin.Keepass.Parsers;
-using Wox.Plugin.Keepass.Services;
+using Wox.Plugin;
+using Wox.Plugins.Common;
+using Wox.Plugins.KeePass.Parsers;
 
-namespace Wox.Plugin.Keepass {
+namespace Wox.Plugins.KeePass {
     public class Startup {
         private static IContainer _container;
 
@@ -13,11 +14,11 @@ namespace Wox.Plugin.Keepass {
             container.RegisterType<Engine>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<Configuration>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<SettingsProvider>().AsImplementedInterfaces().SingleInstance();
-            container.RegisterType<GetLinkParser>().As<IParser>().SingleInstance();
-            container.RegisterType<RunParser>().As<IParser>().SingleInstance();
-            container.RegisterType<DeleteParser>().As<IParser>().SingleInstance();
+            container.RegisterType<OpenKeePassParser>().As<IParser>().SingleInstance();
             container.RegisterType<Storage>().As<IStorage>().SingleInstance();
-            container.RegisterType<LinkProcess>().As<ILinkProcess>().SingleInstance();
+            container.RegisterType<File>().As<IFile>().SingleInstance();
+            container.RegisterType<SetKeePassPathParser>().As<ISetKeePassPathParser>().SingleInstance();
+            container.RegisterType<OpenKeePassParser>().As<IOpenKeePassParser>().SingleInstance();
             _container = container.Build();
         }
 

@@ -5,7 +5,7 @@ namespace Wox.Links.Services {
         void Open(string path);
     }
 
-    class LinkProcess : ILinkProcess {
+    internal class LinkProcess : ILinkProcess {
         public void Open(string path) {
             Process.Start(path);
         }

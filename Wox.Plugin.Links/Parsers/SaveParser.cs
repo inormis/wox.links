@@ -6,7 +6,7 @@ using Wox.Plugin;
 
 namespace Wox.Links.Parsers {
     public class SaveParser : IParser {
-        private static readonly Regex SaveMatch = new Regex(@"--save\b|-s\b", RegexOptions.IgnoreCase);
+        private static readonly Regex SaveMatch = new Regex(@"^link\b|^-l\b", RegexOptions.IgnoreCase);
 
         private readonly IStorage _storage;
 
@@ -20,9 +20,9 @@ namespace Wox.Links.Parsers {
                 return false;
             }
 
-            var saveKeyWord = terms.FirstOrDefault(x => SaveMatch.IsMatch(x));
-            if (saveKeyWord == null)
+            if (!SaveMatch.IsMatch(terms[0])) {
                 return false;
+            }
 
             var shortcut = terms[1];
             var linkPath = terms[2];

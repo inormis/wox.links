@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Wox.Plugin;
 
-namespace Wox.Plugin.Keepass {
+namespace Wox.Plugins.KeePass {
     internal interface IEngine {
         IEnumerable<Result> Execute(Query query);
     }
