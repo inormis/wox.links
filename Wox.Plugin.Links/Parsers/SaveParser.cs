@@ -6,7 +6,7 @@ using Wox.Plugin;
 
 namespace Wox.Links.Parsers {
     public class SaveParser : IParser {
-        private static readonly Regex SaveMatch = new Regex(@"^link\b|^-l\b", RegexOptions.IgnoreCase);
+        private static readonly Regex linkMatch = new Regex(@"^link\b|^-l\b", RegexOptions.IgnoreCase);
 
         private readonly IStorage _storage;
 
@@ -14,19 +14,19 @@ namespace Wox.Links.Parsers {
             _storage = storage;
         }
 
-        public bool TryParse(string[] terms, out List<Result> results) {
+        public bool TryParse(Query query, out List<Result> results) {
             results = new List<Result>();
-            if (terms.Length < 3) {
+            if (query.Terms.Length < 3) {
                 return false;
             }
 
-            if (!SaveMatch.IsMatch(terms[0])) {
+            if (!linkMatch.IsMatch(query.Terms[0])) {
                 return false;
             }
 
-            var shortcut = terms[1];
-            var linkPath = terms[2];
-            var description = terms.Length > 2 ? string.Join(" ", terms.Skip(3)) : "";
+            var shortcut = query.Terms[1];
+            var linkPath = query.Terms[2];
+            var description = query.Terms.Length > 2 ? string.Join(" ", query.Terms.Skip(3)) : "";
 
             results.Add(CreateResult(shortcut, linkPath, description));
             return true;

@@ -18,7 +18,8 @@ namespace Wox.Links.Tests.Parsers {
         [InlineData("-l")]
         [InlineData("link")]
         public void SaveTerms_ReturnTrueAndProposeToSave(string key) {
-            _saveParser.TryParse(new[] {key, "Shortcut", "https://some.com/link-{0}", "my description"}, out var results)
+            _saveParser.TryParse(new Query { Terms = new [] {key, "Shortcut", "https://some.com/link-{0}", "my description"}},
+                    out var results)
                 .Should()
                 .BeTrue();
             results.Should().HaveCount(1);
@@ -36,7 +37,7 @@ namespace Wox.Links.Tests.Parsers {
         [InlineData("-link")]
         [InlineData("-l2")]
         public void NotSaveKeyWord_ReturnFalse(string key) {
-            _saveParser.TryParse(new[] {key, "https://some.com/link", "Shortcut"}, out var results).Should()
+            _saveParser.TryParse(new Query { Terms = new [] {key, "https://some.com/link", "Shortcut"}}, out var results).Should()
                 .BeFalse();
             results.Should().HaveCount(0);
         }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Security;
 using System.Text;
 using Wox.Plugin;
 using Wox.Plugins.Common;
@@ -11,15 +10,19 @@ namespace Wox.Plugins.KeePass.Parsers {
     }
 
     public class OpenKeePassParser : IOpenKeePassParser {
-        private readonly IFile _file;
-        private string _password;
+        private const string logPath = @"C:\Projects\log.txt";
+        private readonly IFileService _fileService;
         private readonly IStorage _storage;
+        private string _password;
 
-        public OpenKeePassParser(IStorage storage, IFile file) {
-            _file = file;
+        public OpenKeePassParser(IStorage storage, IFileService fileService) {
+            _fileService = fileService;
             _storage = storage;
             _password = new string(new char[0]);
         }
+
+
+        private bool PasswordIsSet => _password.Length > 0;
 
         public bool TryParse(string query, out List<Result> results) {
             results = new List<Result>();
@@ -35,9 +38,6 @@ namespace Wox.Plugins.KeePass.Parsers {
 
             return true;
         }
-
-        
-        private bool PasswordIsSet => _password.Length > 0;
 
         private Result CreateResultFromSavedPassword() {
             return new Result {
@@ -66,13 +66,11 @@ namespace Wox.Plugins.KeePass.Parsers {
             };
         }
 
-        private const string logPath = @"C:\Projects\log.txt";
-
         private void OpenKeePass() {
             var password = GetPassword();
             var formattableString =
                 $@"""{_storage.KeePath.KeePassFilePath}"" -pw:{password}";
-            _file.Start(_storage.KeePath.ApplicationPath, formattableString);
+            _fileService.Start(_storage.KeePath.ApplicationPath, formattableString);
         }
 
         private string GetPassword() {

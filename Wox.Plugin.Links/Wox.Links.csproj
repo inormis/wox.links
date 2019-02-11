@@ -60,7 +60,6 @@
     <Compile Include="Parsers\GetLinkParser.cs" />
     <Compile Include="Parsers\ImportConfigParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
-    <Compile Include="Parsers\KeePassParser.cs" />
     <Compile Include="Parsers\SaveParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ILinkProcess.cs" />

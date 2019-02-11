@@ -16,7 +16,7 @@ namespace Wox.Plugins.KeePass {
             container.RegisterType<SettingsProvider>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<OpenKeePassParser>().As<IParser>().SingleInstance();
             container.RegisterType<Storage>().As<IStorage>().SingleInstance();
-            container.RegisterType<File>().As<IFile>().SingleInstance();
+            container.RegisterType<FileService>().As<IFileService>().SingleInstance();
             container.RegisterType<SetKeePassPathParser>().As<ISetKeePassPathParser>().SingleInstance();
             container.RegisterType<OpenKeePassParser>().As<IOpenKeePassParser>().SingleInstance();
             _container = container.Build();

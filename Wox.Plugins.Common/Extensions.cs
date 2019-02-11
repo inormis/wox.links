@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace Wox.Plugins.Common {
     public static class Extensions {

@@ -10,19 +10,19 @@ namespace Wox.Plugins.KeePass.Tests.Parsers {
     public class SetKeePassPathParserTests {
         public SetKeePassPathParserTests() {
             _storage = Substitute.For<IStorage>();
-            _file = Substitute.For<IFile>();
-            parser = new SetKeePassPathParser(_storage, _file);
+            _fileService = Substitute.For<IFileService>();
+            parser = new SetKeePassPathParser(_storage, _fileService);
             _storage.KeePassPathIsConfigured.Returns(true);
         }
 
         private readonly SetKeePassPathParser parser;
         private readonly IStorage _storage;
-        private readonly IFile _file;
+        private readonly IFileService _fileService;
         private const string FilePath = @"c:\file.kdbx";
 
         [Fact]
         public void PassingInvalidKdbxFilePath_ReturnsFalse() {
-            _file.Exists(FilePath).Returns(false);
+            _fileService.Exists(FilePath).Returns(false);
             var tryParse = parser
                 .TryParse(FilePath, out var results);
             tryParse.Should().BeFalse();
@@ -31,9 +31,8 @@ namespace Wox.Plugins.KeePass.Tests.Parsers {
 
         [Fact]
         public void PassingKdbxFilePath_UpdatesStorage() {
-            
-            _file.Exists(FilePath).Returns(true);
-            _file.CheckExtension(FilePath, ".kdbx").Returns(true);
+            _fileService.Exists(FilePath).Returns(true);
+            _fileService.CheckExtension(FilePath, ".kdbx").Returns(true);
             var tryParse = parser
                 .TryParse(FilePath, out var results);
             tryParse.Should().BeTrue();

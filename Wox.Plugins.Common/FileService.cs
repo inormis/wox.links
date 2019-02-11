@@ -3,13 +3,13 @@ using System.Diagnostics;
 using System.IO;
 
 namespace Wox.Plugins.Common {
-    public class File : IFile {
+    public class FileService : IFileService {
         public void Open(string path) {
             Process.Start(path);
         }
 
         public bool Exists(string filePath) {
-            return System.IO.File.Exists(filePath);
+            return File.Exists(filePath);
         }
 
         public bool CheckExtension(string filePath, string extension) {

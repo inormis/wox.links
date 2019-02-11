@@ -7,19 +7,18 @@ namespace Wox.Plugins.KeePass.Parsers {
     }
 
     public class SetKeePassPathParser : ISetKeePassPathParser {
-        private readonly IFile _file;
+        private readonly IFileService _fileService;
         private readonly IStorage _storage;
 
-        public SetKeePassPathParser(IStorage storage, IFile file) {
-            _file = file;
+        public SetKeePassPathParser(IStorage storage, IFileService fileService) {
+            _fileService = fileService;
             _storage = storage;
         }
 
         public bool TryParse(string query, out List<Result> results) {
             results = new List<Result>();
 
-            if (TryToGetFilePath(query))
-            {
+            if (TryToGetFilePath(query)) {
                 var result = new Result {
                     Title = $"Set '{query}' as keepass path",
                     Action = context => {
@@ -42,7 +41,7 @@ namespace Wox.Plugins.KeePass.Parsers {
         }
 
         private bool TryToGetFilePath(string query) {
-            return _file.Exists(query) && _file.CheckExtension(query, ".kdbx");
+            return _fileService.Exists(query) && _fileService.CheckExtension(query, ".kdbx");
         }
     }
 }

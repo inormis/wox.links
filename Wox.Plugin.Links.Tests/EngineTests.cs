@@ -32,7 +32,7 @@ namespace Wox.Links.Tests {
                 new Result {Title = "Ten"}
             };
 
-            _parser.TryParse(_query.Terms, out _)
+            _parser.TryParse(_query, out _)
                 .Returns(x => {
                     x[1] = expectedResult;
                     return true;

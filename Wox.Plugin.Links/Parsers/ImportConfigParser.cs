@@ -1,71 +1,44 @@
 using System.Collections.Generic;
-using System.Linq;
-using Wox.Links.Services;
+using System.Text.RegularExpressions;
 using Wox.Plugin;
 using Wox.Plugins.Common;
 
 namespace Wox.Links.Parsers {
     public class ImportConfigParser : IParser {
-        private readonly ILinkProcess _linkProcess;
-        private readonly IStorage _storage;
+        private static readonly Regex SaveMatch = new Regex(@"^link\b|^-l\b", RegexOptions.IgnoreCase);
 
-        public ImportConfigParser(IStorage storage, ILinkProcess linkProcess) {
-            _linkProcess = linkProcess;
+        private readonly IStorage _storage;
+        private readonly IFileService _fileService;
+
+        public ImportConfigParser(IStorage storage, IFileService fileService) {
+            _fileService = fileService;
             _storage = storage;
         }
 
-        public bool TryParse(string[] terms, out List<Result> results) {
+        public bool TryParse(Query query, out List<Result> results) {
             results = new List<Result>();
-
-            if (terms.Length == 0) {
+            var indexOf = query.Search.IndexOf(' ');
+            if (indexOf == -1)
                 return false;
+
+            var key = query.Search.Substring(0, indexOf);
+            var path = query.Search.Substring(indexOf + 1);
+
+            if (SaveMatch.IsMatch(key) && _fileService.Exists(path) &&
+                _fileService.CheckExtension(path, ".json")) {
+                results.Add(Create(path));
+                return true;
             }
 
-            var key = terms.First();
-            var links = _storage.GetShortcuts().Where(x => x.Shortcut.MatchShortcut(key)).ToArray();
-
-            results.AddRange(links.Select(link => {
-                var args = terms.Skip(1).ToArray();
-                return Create(link, args.FirstOrDefault());
-            }));
-            return true;
+            return false;
         }
 
-        private Result Create(Link x, string arg) {
-            var url = Format(x.Path, arg);
-            var canOpenLink = CanOpenLink(url);
-            var description = string.IsNullOrEmpty(x.Description) ? "" : FormatDescription(x.Description, arg);
+        private Result Create(string jsonPath) {
             return new Result {
-                Title = $"Import configuration file and replace current",
+                Title = "Import configuration file and replace current",
                 SubTitle = "Existing configuration will be deleted",
-                Action = context => {
-                    if (canOpenLink) {
-                        _linkProcess.Open(url);
-                    }
-
-                    return canOpenLink;
-                }
+                Action = context => { return _storage.TryImport(jsonPath); }
             };
-        }
-
-        private static string Format(string format, string arg) {
-            if (string.IsNullOrWhiteSpace(arg) && format.Contains("@@")) {
-                return format;
-            }
-
-            return format?.Replace("@@", arg);
-        }
-
-        private static string FormatDescription(string format, string arg) {
-            if (string.IsNullOrWhiteSpace(arg)) {
-                arg = "{Parameter is missing}";
-            }
-
-            return format?.Replace("@@", arg);
-        }
-
-        private static bool CanOpenLink(string url) {
-            return !url.Contains("@@");
         }
     }
 }

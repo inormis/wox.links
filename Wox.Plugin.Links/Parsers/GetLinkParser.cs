@@ -14,18 +14,18 @@ namespace Wox.Links.Parsers {
             _storage = storage;
         }
 
-        public bool TryParse(string[] terms, out List<Result> results) {
+        public bool TryParse(Query query, out List<Result> results) {
             results = new List<Result>();
 
-            if (terms.Length == 0) {
+            if (query.Terms.Length == 0) {
                 return false;
             }
 
-            var key = terms.First();
+            var key = query.Terms.First();
             var links = _storage.GetShortcuts().Where(x => x.Shortcut.MatchShortcut(key)).ToArray();
 
             results.AddRange(links.Select(link => {
-                var args = terms.Skip(1).ToArray();
+                var args = query.Terms.Skip(1).ToArray();
                 return Create(link, args.FirstOrDefault());
             }));
             return true;

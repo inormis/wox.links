@@ -11,12 +11,12 @@ namespace Wox.Links {
         }
 
         public IEnumerable<Result> Execute(Query query) {
-            var terms = query.Terms;
             foreach (var parser in _parsers) {
-                if (parser.TryParse(terms, out var results)) {
+                if (parser.TryParse(query, out var results)) {
                     foreach (var result in results) {
                         yield return result;
                     }
+                    yield break;
                 }
             }
         }

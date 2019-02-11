@@ -1,5 +1,5 @@
 namespace Wox.Plugins.Common {
-    public interface IFile {
+    public interface IFileService {
         void Open(string path);
 
         bool Exists(string filePath);
