@@ -6,22 +6,21 @@ using Wox.Plugins.Common;
 namespace Wox.Plugin.Links.Parsers {
     public class ImportParser : IParser {
         private static readonly Regex SaveMatch = new Regex(@"^link\b|^-l\b", RegexOptions.IgnoreCase);
+        private readonly IFileService _fileService;
 
         private readonly IStorage _storage;
-        private readonly IFileService _fileService;
 
         public ImportParser(IStorage storage, IFileService fileService) {
             _fileService = fileService;
             _storage = storage;
         }
 
-        public ParserPriority Priority { get; } = ParserPriority.High;
-
         public bool TryParse(IQuery query, out List<Result> results) {
             results = new List<Result>();
             var indexOf = query.Search.IndexOf(' ');
-            if (indexOf == -1)
+            if (indexOf == -1) {
                 return false;
+            }
 
             var key = query.Search.Substring(0, indexOf);
             var path = query.Search.Substring(indexOf + 1);

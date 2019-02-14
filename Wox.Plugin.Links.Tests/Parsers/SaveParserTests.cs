@@ -38,7 +38,8 @@ namespace Wox.Links.Tests.Parsers {
         [InlineData("-link")]
         [InlineData("-l2")]
         public void NotSaveKeyWord_ReturnFalse(string key) {
-            _saveParser.TryParse(Helpers.CreateQuery(key, "https://some.com/link", "Shortcut"), out var results).Should()
+            _saveParser.TryParse(Helpers.CreateQuery(key, "https://some.com/link", "Shortcut"), out var results)
+                .Should()
                 .BeFalse();
             results.Should().HaveCount(0);
         }

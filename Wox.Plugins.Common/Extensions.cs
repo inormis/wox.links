@@ -11,6 +11,14 @@ namespace Wox.Plugins.Common {
             return value.IndexOf(part, StringComparison.InvariantCultureIgnoreCase) != -1;
         }
 
+        public static bool StartsWithCaseInsensitive(this string value, string part) {
+            if (string.IsNullOrWhiteSpace(part)) {
+                return false;
+            }
+
+            return value.IndexOf(part, StringComparison.InvariantCultureIgnoreCase) == 0;
+        }
+
         public static bool NotEmpty(this string value) {
             return !string.IsNullOrWhiteSpace(value);
         }

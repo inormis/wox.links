@@ -6,5 +6,6 @@ namespace Wox.Plugins.Common {
 
         bool CheckExtension(string filePath, string extension);
         void Start(string command, string args);
+        bool WriteAllText(string filePath, string content);
     }
 }

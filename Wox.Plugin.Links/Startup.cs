@@ -13,13 +13,15 @@ namespace Wox.Plugin.Links {
             container.RegisterInstance(pluginInitContext).AsSelf();
             container.RegisterType<Engine>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<SettingsProvider>().AsImplementedInterfaces().SingleInstance();
-            container.RegisterType<GetLinkParser>().As<IParser>().SingleInstance();
-            container.RegisterType<SaveParser>().As<IParser>().SingleInstance();
-            container.RegisterType<DeleteParser>().As<IParser>().SingleInstance();
             container.RegisterType<Storage>().As<IStorage>().SingleInstance();
             container.RegisterType<LinkProcess>().As<ILinkProcess>().SingleInstance();
-            container.RegisterType<ImportParser>().As<IParser>().SingleInstance();
             container.RegisterType<FileService>().As<IFileService>().SingleInstance();
+            
+            container.RegisterType<SaveParser>().As<IParser>().AsSelf().SingleInstance();
+            container.RegisterType<DeleteParser>().As<IParser>().AsSelf().SingleInstance();
+            container.RegisterType<ImportParser>().As<IParser>().AsSelf().SingleInstance();
+            container.RegisterType<ExportParser>().As<IParser>().AsSelf().SingleInstance();
+            container.RegisterType<GetLinkParser>().As<IParser>().AsSelf().SingleInstance();
             _container = container.Build();
         }
 

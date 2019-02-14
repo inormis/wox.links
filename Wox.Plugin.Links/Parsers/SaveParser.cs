@@ -14,8 +14,6 @@ namespace Wox.Plugin.Links.Parsers {
             _storage = storage;
         }
 
-        public ParserPriority Priority { get; } = ParserPriority.Normal;
-
         public bool TryParse(IQuery query, out List<Result> results) {
             results = new List<Result>();
             if (query.Terms.Length < 3) {

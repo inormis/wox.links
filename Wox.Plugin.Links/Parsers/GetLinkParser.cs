@@ -4,7 +4,7 @@ using Wox.Plugin.Links.Services;
 using Wox.Plugins.Common;
 
 namespace Wox.Plugin.Links.Parsers {
-    public class GetLinkParser : IParser {
+    public class GetLinkParser : BaseParser {
         private readonly ILinkProcess _linkProcess;
         private readonly IStorage _storage;
 
@@ -12,10 +12,8 @@ namespace Wox.Plugin.Links.Parsers {
             _linkProcess = linkProcess;
             _storage = storage;
         }
-        
-        public ParserPriority Priority { get; } = ParserPriority.Normal;
 
-        public bool TryParse(IQuery query, out List<Result> results) {
+        public override bool TryParse(IQuery query, out List<Result> results) {
             results = new List<Result>();
 
             if (query.Terms.Length == 0) {

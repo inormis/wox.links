@@ -20,5 +20,15 @@ namespace Wox.Plugins.Common {
         public void Start(string command, string args) {
             Process.Start(command, args);
         }
+
+        public bool WriteAllText(string filePath, string content) {
+            try {
+                File.WriteAllText(filePath, content);
+                return true;
+            }
+            catch (Exception e) {
+                return false;
+            }
+        }
     }
 }

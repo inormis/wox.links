@@ -11,6 +11,7 @@ namespace Wox.Plugin.Links {
 
         void Delete(string shortcut);
         bool TryImport(string jsonPath);
+        string ExportAsJsonString();
     }
 
     internal class Storage : IStorage {
@@ -50,11 +51,17 @@ namespace Wox.Plugin.Links {
         public bool TryImport(string jsonPath) {
             try {
                 _links = ReadLinksFromFile(jsonPath);
+                _configuration.LinksFilePath = jsonPath;
+                Save();
                 return true;
             }
             catch {
                 return false;
             }
+        }
+
+        public string ExportAsJsonString() {
+            return JsonConvert.SerializeObject(_links, Formatting.Indented);
         }
 
         private Configuration LoadConfiguration() {
@@ -85,7 +92,7 @@ namespace Wox.Plugin.Links {
         private void Save() {
             var serializedConfiguration = JsonConvert.SerializeObject(_configuration, Formatting.Indented);
             File.WriteAllText(ConfigurationPath, serializedConfiguration);
-            
+
             var content = JsonConvert.SerializeObject(_links.Values.ToArray(), Formatting.Indented);
             File.WriteAllText(_configuration.LinksFilePath, content);
         }

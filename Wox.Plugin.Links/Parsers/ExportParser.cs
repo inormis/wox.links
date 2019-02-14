@@ -1,0 +1,40 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
+using Wox.Plugins.Common;
+
+namespace Wox.Plugin.Links.Parsers {
+    public class ExportParser : BaseCommandParser {
+        private readonly IFileService _fileService;
+
+        private readonly IStorage _storage;
+
+        public ExportParser(IStorage storage, IFileService fileService) : base("export") {
+            _fileService = fileService;
+            _storage = storage;
+        }
+
+        protected override List<Result> Execute(string[] termsArguments) {
+            return new List<Result> {
+                new Result {
+                    Title = "Export links as a json file",
+                    SubTitle = "Save dialog will popup",
+                    Action = Export
+                }
+            };
+        }
+
+        private bool Export(ActionContext arg) {
+            var content = _storage.ExportAsJsonString();
+            var dialog = new SaveFileDialog {
+                Filter = "Configuration file | *.json", DefaultExt = "json", FileName = "links.json"
+            };
+            var result = dialog.ShowDialog();
+            if (result == DialogResult.OK) {
+                return _fileService.WriteAllText(dialog.FileName, content);
+            }
+
+            return true;
+        }
+    }
+}

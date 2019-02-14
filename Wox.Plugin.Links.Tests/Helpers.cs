@@ -5,7 +5,5 @@ namespace Wox.Links.Tests {
         public static IQuery CreateQuery(params string[] terms) {
             return new QueryInstance("", terms);
         }
-        
-        
     }
 }
