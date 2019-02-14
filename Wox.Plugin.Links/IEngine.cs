@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Wox.Plugin;
+using Wox.Plugins.Common;
 
-namespace Wox.Links {
+namespace Wox.Plugin.Links {
     internal interface IEngine {
-        IEnumerable<Result> Execute(Query query);
+        IEnumerable<Result> Execute(IQuery query);
     }
 }

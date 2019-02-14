@@ -1,4 +1,4 @@
-﻿namespace Wox.Links {
+﻿namespace Wox.Plugin.Links {
     public class Link {
         public string Shortcut { get; set; }
 

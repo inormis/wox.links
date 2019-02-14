@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using Wox.Links.Parsers;
 using Wox.Plugin;
+using Wox.Plugin.Links;
+using Wox.Plugin.Links.Parsers;
 using Xunit;
 
 namespace Wox.Links.Tests {

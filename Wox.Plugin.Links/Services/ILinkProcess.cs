@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Wox.Links.Services {
+namespace Wox.Plugin.Links.Services {
     public interface ILinkProcess {
         void Open(string path);
     }

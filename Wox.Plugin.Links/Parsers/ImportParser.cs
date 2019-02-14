@@ -1,21 +1,23 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
-using Wox.Plugin;
 using Wox.Plugins.Common;
 
-namespace Wox.Links.Parsers {
-    public class ImportConfigParser : IParser {
+namespace Wox.Plugin.Links.Parsers {
+    public class ImportParser : IParser {
         private static readonly Regex SaveMatch = new Regex(@"^link\b|^-l\b", RegexOptions.IgnoreCase);
 
         private readonly IStorage _storage;
         private readonly IFileService _fileService;
 
-        public ImportConfigParser(IStorage storage, IFileService fileService) {
+        public ImportParser(IStorage storage, IFileService fileService) {
             _fileService = fileService;
             _storage = storage;
         }
 
-        public bool TryParse(Query query, out List<Result> results) {
+        public ParserPriority Priority { get; } = ParserPriority.High;
+
+        public bool TryParse(IQuery query, out List<Result> results) {
             results = new List<Result>();
             var indexOf = query.Search.IndexOf(' ');
             if (indexOf == -1)
@@ -35,9 +37,9 @@ namespace Wox.Links.Parsers {
 
         private Result Create(string jsonPath) {
             return new Result {
-                Title = "Import configuration file and replace current",
+                Title = $"Import configuration file {Path.GetFileName(jsonPath)} and replace current",
                 SubTitle = "Existing configuration will be deleted",
-                Action = context => { return _storage.TryImport(jsonPath); }
+                Action = context => _storage.TryImport(jsonPath)
             };
         }
     }

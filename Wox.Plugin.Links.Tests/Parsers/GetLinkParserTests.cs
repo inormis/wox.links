@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using Wox.Links.Parsers;
-using Wox.Links.Services;
 using Wox.Plugin;
+using Wox.Plugin.Links;
+using Wox.Plugin.Links.Parsers;
+using Wox.Plugin.Links.Services;
+using Wox.Plugins.Common;
 using Xunit;
 
 namespace Wox.Links.Tests.Parsers {
@@ -45,7 +47,7 @@ namespace Wox.Links.Tests.Parsers {
         public void InputIsWordWithCapitalCase_IgnoreMatchesOfLowerCase() {
             _storage.GetShortcuts().Returns(_links);
 
-            _saveParser.TryParse(new Query { Terms = new [] {"GC"}}, out var results).Should()
+            _saveParser.TryParse(Helpers.CreateQuery("GC"), out var results).Should()
                 .BeTrue();
             results.Should().BeEmpty();
         }
@@ -54,7 +56,7 @@ namespace Wox.Links.Tests.Parsers {
         public void InputIsWordWithCapitalCase_MatchByNameSplitByCapitalCases() {
             _storage.GetShortcuts().Returns(_links);
 
-            _saveParser.TryParse(new Query { Terms = new [] {"GA"}}, out var results).Should()
+            _saveParser.TryParse(Helpers.CreateQuery("GA"), out var results).Should()
                 .BeTrue();
             results.Should().HaveCount(1);
 
@@ -65,7 +67,7 @@ namespace Wox.Links.Tests.Parsers {
         public void MatchByName_ReturnFullUrl() {
             _storage.GetShortcuts().Returns(_links);
 
-            _saveParser.TryParse(new Query { Terms = new [] {"cut"}}, out var results).Should()
+            _saveParser.TryParse(Helpers.CreateQuery("cut"), out var results).Should()
                 .BeTrue();
             results.Should().HaveCount(2);
 
@@ -86,7 +88,7 @@ namespace Wox.Links.Tests.Parsers {
                 }
             });
 
-            _saveParser.TryParse(new Query { Terms = new [] {"cut", "8700"}}, out var results)
+            _saveParser.TryParse(Helpers.CreateQuery("cut", "8700"), out var results)
                 .Should().BeTrue();
 
 
@@ -105,7 +107,7 @@ namespace Wox.Links.Tests.Parsers {
                 }
             });
 
-            _saveParser.TryParse(new Query { Terms = new [] {"cut"}}, out var results)
+            _saveParser.TryParse(Helpers.CreateQuery("cut"), out var results)
                 .Should().BeTrue();
 
 

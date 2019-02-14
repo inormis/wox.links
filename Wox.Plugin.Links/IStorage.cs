@@ -2,9 +2,8 @@
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using Wox.Plugin;
 
-namespace Wox.Links {
+namespace Wox.Plugin.Links {
     public interface IStorage {
         void Set(string shortcut, string url, string description);
 

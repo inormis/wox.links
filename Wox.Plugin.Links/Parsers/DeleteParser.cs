@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Wox.Plugin;
 using Wox.Plugins.Common;
 
-namespace Wox.Links.Parsers {
+namespace Wox.Plugin.Links.Parsers {
     public class DeleteParser : IParser {
         private static readonly Regex Match = new Regex(@"--delete\b|--remove\b|-d\b|-r\b", RegexOptions.IgnoreCase);
 
@@ -14,7 +13,9 @@ namespace Wox.Links.Parsers {
             _storage = storage;
         }
 
-        public bool TryParse(Query query, out List<Result> results) {
+        public ParserPriority Priority { get; } = ParserPriority.Normal;
+        
+        public bool TryParse(IQuery query, out List<Result> results) {
             
             results = new List<Result>();
             if (query.Terms.Length > 2) {

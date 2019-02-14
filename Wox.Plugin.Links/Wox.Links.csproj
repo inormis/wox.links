@@ -58,8 +58,9 @@
     <Compile Include="Main.cs" />
     <Compile Include="Parsers\DeleteParser.cs" />
     <Compile Include="Parsers\GetLinkParser.cs" />
-    <Compile Include="Parsers\ImportConfigParser.cs" />
+    <Compile Include="Parsers\ImportParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
+    <Compile Include="Parsers\ParserPriority.cs" />
     <Compile Include="Parsers\SaveParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ILinkProcess.cs" />

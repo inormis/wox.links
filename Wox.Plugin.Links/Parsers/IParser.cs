@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using Wox.Plugin;
+using Wox.Plugins.Common;
 
-namespace Wox.Links.Parsers {
+namespace Wox.Plugin.Links.Parsers {
     public interface IParser {
-        bool TryParse(Query query, out List<Result> results);
+        ParserPriority Priority { get; }
+        bool TryParse(IQuery query, out List<Result> results);
     }
 }

@@ -74,8 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EngineTests.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Parsers\DeleteParserTests.cs" />
     <Compile Include="Parsers\GetLinkParserTests.cs" />
+    <Compile Include="Parsers\ImportParserTests.cs" />
     <Compile Include="Parsers\SaveParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartupTests.cs" />
@@ -88,6 +90,10 @@
     <ProjectReference Include="..\Wox.Plugin.Links\Wox.Links.csproj">
       <Project>{b16a909b-e908-4bdb-baa9-a26ea349c2e5}</Project>
       <Name>Wox.Links</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wox.Plugins.Common\Wox.Plugins.Common.csproj">
+      <Project>{052ec7e2-94e4-4d27-9aec-8b567cba4288}</Project>
+      <Name>Wox.Plugins.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

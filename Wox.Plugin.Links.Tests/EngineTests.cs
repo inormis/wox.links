@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using NSubstitute;
-using Wox.Links.Parsers;
 using Wox.Plugin;
+using Wox.Plugin.Links;
+using Wox.Plugin.Links.Parsers;
+using Wox.Plugins.Common;
 using Xunit;
 
 namespace Wox.Links.Tests {
@@ -16,9 +18,9 @@ namespace Wox.Links.Tests {
 
         private readonly IParser _parser;
 
-        private readonly Query _query = new Query {
+        private readonly IQuery _query = new QueryInstance(new Query {
             Terms = new[] {"-save", "https://jira.com", "jj"}
-        };
+        });
 
         [Fact]
         public void NoParserFound_ReturnEmptyResult() {

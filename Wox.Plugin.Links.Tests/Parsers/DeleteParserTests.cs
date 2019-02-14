@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using Wox.Links.Parsers;
 using Wox.Plugin;
+using Wox.Plugin.Links;
+using Wox.Plugin.Links.Parsers;
+using Wox.Plugins.Common;
 using Xunit;
 
 namespace Wox.Links.Tests.Parsers {
@@ -34,7 +36,7 @@ namespace Wox.Links.Tests.Parsers {
                     Shortcut = "google"
                 }
             });
-            _parser.TryParse(new Query { Terms = new []{key}}, out var results).Should().BeTrue();
+            _parser.TryParse(new QueryInstance(new Query { Terms = new []{key}}), out var results).Should().BeTrue();
             results.Should().HaveCount(3);
 
             results[0].Title.Should().Be("Delete 'Ad1' link");
@@ -55,7 +57,7 @@ namespace Wox.Links.Tests.Parsers {
         [InlineData("-remo")]
         [InlineData("-re")]
         public void NotSaveKeyWord_ReturnFalse(string key) {
-            _parser.TryParse(new Query { Terms = new [] {key, "https://some.com/link", "Shortcut"}}, out var results).Should()
+            _parser.TryParse(new QueryInstance(new Query { Terms = new [] {key, "https://some.com/link", "Shortcut"}}), out var results).Should()
                 .BeFalse();
             results.Should().HaveCount(0);
         }
@@ -76,7 +78,7 @@ namespace Wox.Links.Tests.Parsers {
                     Path = "https://gl"
                 }
             });
-            _parser.TryParse(new Query { Terms = new [] {"-d", "mov"}}, out var results).Should().BeTrue();
+            _parser.TryParse(new QueryInstance("", new [] {"-d", "mov"}), out var results).Should().BeTrue();
             results.Should().HaveCount(2);
 
             results[1].Title.Should().Be("Delete 'movie' link");

@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using Wox.Links.Parsers;
 using Wox.Plugin;
+using Wox.Plugin.Links;
+using Wox.Plugin.Links.Parsers;
 using Xunit;
 
 namespace Wox.Links.Tests.Parsers {
@@ -18,7 +19,7 @@ namespace Wox.Links.Tests.Parsers {
         [InlineData("-l")]
         [InlineData("link")]
         public void SaveTerms_ReturnTrueAndProposeToSave(string key) {
-            _saveParser.TryParse(new Query { Terms = new [] {key, "Shortcut", "https://some.com/link-{0}", "my description"}},
+            _saveParser.TryParse(Helpers.CreateQuery(key, "Shortcut", "https://some.com/link-{0}", "my description"),
                     out var results)
                 .Should()
                 .BeTrue();
@@ -37,7 +38,7 @@ namespace Wox.Links.Tests.Parsers {
         [InlineData("-link")]
         [InlineData("-l2")]
         public void NotSaveKeyWord_ReturnFalse(string key) {
-            _saveParser.TryParse(new Query { Terms = new [] {key, "https://some.com/link", "Shortcut"}}, out var results).Should()
+            _saveParser.TryParse(Helpers.CreateQuery(key, "https://some.com/link", "Shortcut"), out var results).Should()
                 .BeFalse();
             results.Should().HaveCount(0);
         }
