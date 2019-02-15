@@ -67,6 +67,7 @@
     <Compile Include="Parsers\ImportParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Parsers\ParserPriority.cs" />
+    <Compile Include="Parsers\RenameParser.cs" />
     <Compile Include="Parsers\SaveParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ILinkProcess.cs" />

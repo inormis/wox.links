@@ -20,8 +20,7 @@ namespace Wox.Plugin.Links.Parsers {
                 return false;
             }
 
-            var key = query.Terms.First();
-            var links = _storage.GetShortcuts().Where(x => x.Shortcut.MatchShortcut(key)).ToArray();
+            var links = _storage.GetShortcuts().Where(x => query.Terms.All(key =>x.Shortcut.MatchShortcut(key))).ToArray();
 
             results.AddRange(links.Select(link => {
                 var args = query.Terms.Skip(1).ToArray();

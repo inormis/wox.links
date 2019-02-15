@@ -11,7 +11,7 @@ namespace Wox.Links.Tests {
     public class EngineTests {
         public EngineTests() {
             _parser = Substitute.For<IParser>();
-            _engine = new Engine(null,null,null,null,null);
+            _engine = new Engine(new []{_parser});
         }
 
         private readonly Engine _engine;

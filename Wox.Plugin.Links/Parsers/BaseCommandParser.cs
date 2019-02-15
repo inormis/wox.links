@@ -7,6 +7,8 @@ namespace Wox.Plugin.Links.Parsers {
     public abstract class BaseCommandParser : BaseParser {
         private readonly Regex CommandMatch;
 
+        public override ParserPriority Priority { get; } = ParserPriority.High;
+
         public BaseCommandParser(string commandKey) {
             CommandMatch = new Regex($@"^{commandKey}\b|^-{commandKey[0]}\b", RegexOptions.IgnoreCase);
         }
@@ -19,10 +21,20 @@ namespace Wox.Plugin.Links.Parsers {
 
             if (IsLinkKeyword(query.Terms[0]) && CommandMatch.IsMatch(query.Terms[1])) {
                 results = Execute(query.Terms.Skip(2).ToArray());
-                return results.Any();
+                return true;
             }
 
             return false;
+        }
+
+        protected List<Result> GetErrorResult(string message, string subTitle = null) {
+            return new List<Result> {
+                new Result {
+                    Title = message,
+                    SubTitle = subTitle,
+                    Action = context => false
+                }
+            };
         }
 
         protected abstract List<Result> Execute(string[] termsArguments);

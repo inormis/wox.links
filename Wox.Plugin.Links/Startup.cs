@@ -21,6 +21,7 @@ namespace Wox.Plugin.Links {
             container.RegisterType<DeleteParser>().As<IParser>().AsSelf().SingleInstance();
             container.RegisterType<ImportParser>().As<IParser>().AsSelf().SingleInstance();
             container.RegisterType<ExportParser>().As<IParser>().AsSelf().SingleInstance();
+            container.RegisterType<RenameParser>().As<IParser>().AsSelf().SingleInstance();
             container.RegisterType<GetLinkParser>().As<IParser>().AsSelf().SingleInstance();
             _container = container.Build();
         }

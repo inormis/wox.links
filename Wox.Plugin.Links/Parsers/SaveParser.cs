@@ -32,6 +32,8 @@ namespace Wox.Plugin.Links.Parsers {
             return true;
         }
 
+        public ParserPriority Priority { get; } = ParserPriority.Normal;
+
         private Result CreateResult(string shortCut, string linkPath, string description) {
             Debug.WriteLine(shortCut + " => " + description);
 

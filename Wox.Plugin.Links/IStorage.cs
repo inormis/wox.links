@@ -12,6 +12,8 @@ namespace Wox.Plugin.Links {
         void Delete(string shortcut);
         bool TryImport(string jsonPath);
         string ExportAsJsonString();
+        bool TryGetByShortcut(string shortcut, out Link link);
+        void Rename(string existingShortCut, string newShortcut);
     }
 
     internal class Storage : IStorage {
@@ -62,6 +64,19 @@ namespace Wox.Plugin.Links {
 
         public string ExportAsJsonString() {
             return JsonConvert.SerializeObject(_links, Formatting.Indented);
+        }
+
+        public bool TryGetByShortcut(string shortcut, out Link link) {
+            return _links.TryGetValue(shortcut, out link);
+        }
+
+        public void Rename(string existingShortCut, string newShortcut) {
+            var link = _links[existingShortCut];
+            link.Shortcut = newShortcut;
+            _links.Add(newShortcut, link);
+            _links.Remove(existingShortCut);
+            
+            Save();
         }
 
         private Configuration LoadConfiguration() {

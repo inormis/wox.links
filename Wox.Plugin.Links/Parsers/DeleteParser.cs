@@ -1,50 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Wox.Plugins.Common;
 
 namespace Wox.Plugin.Links.Parsers {
-    public class DeleteParser : IParser {
-        private static readonly Regex Match = new Regex(@"--delete\b|--remove\b|-d\b|-r\b", RegexOptions.IgnoreCase);
-
+    public class DeleteParser : BaseCommandParser {
         private readonly IStorage _storage;
 
-        public DeleteParser(IStorage storage) {
+        public DeleteParser(IStorage storage) : base("delete") {
             _storage = storage;
         }
 
-        public bool TryParse(IQuery query, out List<Result> results) {
-            results = new List<Result>();
-            if (query.Terms.Length > 2) {
-                return false;
+        protected override List<Result> Execute(string[] termsArguments) {
+            if (termsArguments.Length >=2) {
+                return GetErrorResult("Only one argument has to be specified");
             }
 
-            var keyWord = query.Terms.FirstOrDefault(x => Match.IsMatch(x));
-            if (keyWord == null) {
-                return false;
-            }
+            var arg = termsArguments.SingleOrDefault();
 
-            var shortcut = query.Terms.SingleOrDefault(x => x != keyWord);
-            var links = _storage.GetShortcuts();
-            results.AddRange(GetResults(links, shortcut));
-            return true;
-        }
-
-        private Result[] GetResults(Link[] links, string shortcut) {
-            return links
-                .Where(x => shortcut == null ||
-                            x.Shortcut.ContainsCaseInsensitive(shortcut) ||
-                            x.Path.ContainsCaseInsensitive(shortcut))
+            var predicate = string.IsNullOrWhiteSpace(arg)
+                ? (Func<string, bool>) (s => true)
+                : s=> s.ContainsCaseInsensitive(arg);
+            return _storage.GetShortcuts()
+                .Where(link => predicate(link.Shortcut))
                 .Select(x => new Result {
-                    Title = "Delete '" + x.Shortcut + "' link",
-                    SubTitle = x.Path,
+                    Title = x.Shortcut,
+                    SubTitle = $"DELETE shortcut [{x.Shortcut}]",
                     Action = context => {
                         _storage.Delete(x.Shortcut);
                         return true;
                     }
                 })
-                .OrderBy(x => x.Title)
-                .ToArray();
+                .OrderBy(x=>x.Title)
+                .ToList();
         }
     }
 }

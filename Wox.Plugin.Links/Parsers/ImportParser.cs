@@ -34,6 +34,8 @@ namespace Wox.Plugin.Links.Parsers {
             return false;
         }
 
+        public ParserPriority Priority { get; } = ParserPriority.High;
+
         private Result Create(string jsonPath) {
             return new Result {
                 Title = $"Import configuration file {Path.GetFileName(jsonPath)} and replace current",
