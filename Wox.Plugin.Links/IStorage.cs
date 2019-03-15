@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Wox.Plugins.Common;
 
 namespace Wox.Plugin.Links {
     public interface IStorage {
@@ -18,13 +19,15 @@ namespace Wox.Plugin.Links {
 
     internal class Storage : IStorage {
         private readonly Configuration _configuration;
-        private readonly PluginInitContext _context;
+        private readonly IPluginContext _context;
         private readonly string _directory;
         private Dictionary<string, Link> _links;
+        private IFileService _fileService;
 
-        public Storage(PluginInitContext context) {
+        public Storage(IPluginContext context, IFileService fileService) {
+            _fileService = fileService;
             _context = context;
-            _directory = _context.CurrentPluginMetadata?.PluginDirectory;
+            _directory = _context.Directory;
             _configuration = LoadConfiguration();
             _links = LoadLinks();
         }
@@ -80,8 +83,8 @@ namespace Wox.Plugin.Links {
         }
 
         private Configuration LoadConfiguration() {
-            if (File.Exists(ConfigurationPath)) {
-                return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(ConfigurationPath));
+            if (_fileService.Exists(ConfigurationPath)) {
+                return JsonConvert.DeserializeObject<Configuration>(_fileService.ReadAllText(ConfigurationPath));
             }
 
             var configuration = new Configuration {
@@ -92,24 +95,24 @@ namespace Wox.Plugin.Links {
 
         private Dictionary<string, Link> LoadLinks() {
             var linksFilePath = _configuration.LinksFilePath;
-            if (File.Exists(linksFilePath)) {
+            if (_fileService.Exists(linksFilePath)) {
                 return ReadLinksFromFile(linksFilePath);
             }
 
             return new Dictionary<string, Link>();
         }
 
-        private static Dictionary<string, Link> ReadLinksFromFile(string linksFilePath) {
-            var links = JsonConvert.DeserializeObject<Link[]>(File.ReadAllText(linksFilePath));
+        private Dictionary<string, Link> ReadLinksFromFile(string linksFilePath) {
+            var links = JsonConvert.DeserializeObject<Link[]>(_fileService.ReadAllText(linksFilePath));
             return links.ToDictionary(x => x.Shortcut, x => x);
         }
 
         private void Save() {
             var serializedConfiguration = JsonConvert.SerializeObject(_configuration, Formatting.Indented);
-            File.WriteAllText(ConfigurationPath, serializedConfiguration);
+            _fileService.WriteAllText(ConfigurationPath, serializedConfiguration);
 
             var content = JsonConvert.SerializeObject(_links.Values.ToArray(), Formatting.Indented);
-            File.WriteAllText(_configuration.LinksFilePath, content);
+            _fileService.WriteAllText(_configuration.LinksFilePath, content);
         }
     }
 

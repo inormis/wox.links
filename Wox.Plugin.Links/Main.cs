@@ -12,7 +12,7 @@ namespace Wox.Plugin.Links {
         }
 
         public void Init(PluginInitContext context) {
-            Startup.Initialize(context);
+            Startup.Initialize(new PluginContext(context));
             _engine = Startup.Resolve<IEngine>();
         }
     }

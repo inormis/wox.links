@@ -54,6 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutofacModule.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="IEngine.cs" />
     <Compile Include="IStorage.cs" />

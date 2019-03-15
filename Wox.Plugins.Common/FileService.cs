@@ -30,5 +30,9 @@ namespace Wox.Plugins.Common {
                 return false;
             }
         }
+
+        public string ReadAllText(string path) {
+            return File.ReadAllText(path);
+        }
     }
 }

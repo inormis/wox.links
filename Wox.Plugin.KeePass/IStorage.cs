@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
 using Wox.Plugin;
+using Wox.Plugins.Common;
 
 namespace Wox.Plugins.KeePass {
     public interface IStorage {
@@ -12,12 +13,12 @@ namespace Wox.Plugins.KeePass {
     }
 
     internal class Storage : IStorage {
-        private readonly PluginInitContext _context;
+        private readonly IPluginContext _context;
         private readonly string _directory;
 
-        public Storage(PluginInitContext context) {
+        public Storage(IPluginContext context) {
             _context = context;
-            _directory = _context.CurrentPluginMetadata?.PluginDirectory;
+            _directory = _context.Directory;
 
             KeePath = Load();
         }

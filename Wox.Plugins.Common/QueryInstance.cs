@@ -7,7 +7,7 @@ namespace Wox.Plugins.Common {
             Terms = query.Terms;
         }
 
-        public QueryInstance(string search, string[] terms) {
+        public QueryInstance(string search, params string[] terms) {
             Search = search;
             Terms = terms;
         }

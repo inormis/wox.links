@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Wox.Plugin;
+using Wox.Plugins.Common;
 
 namespace Wox.Plugins.KeePass {
     internal class Main : IPlugin {
@@ -12,7 +13,7 @@ namespace Wox.Plugins.KeePass {
         }
 
         public void Init(PluginInitContext context) {
-            Startup.Initialize(context);
+            Startup.Initialize(new PluginContext(context));
             _engine = Startup.Resolve<IEngine>();
         }
     }
