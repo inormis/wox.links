@@ -26,9 +26,13 @@ namespace Wox.Plugins.Common {
                 File.WriteAllText(filePath, content);
                 return true;
             }
-            catch (Exception e) {
+            catch (Exception) {
                 return false;
             }
+        }
+
+        public string GetExtension(string filePath) {
+            return Path.GetExtension(filePath);
         }
 
         public string ReadAllText(string path) {

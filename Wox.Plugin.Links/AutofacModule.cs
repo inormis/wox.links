@@ -6,7 +6,7 @@ using Wox.Plugins.Common;
 
 namespace Wox.Plugin.Links {
     public class AutofacModule : Module {
-        private IPluginContext _pluginContext;
+        private readonly IPluginContext _pluginContext;
 
         public AutofacModule(IPluginContext pluginContext) {
             _pluginContext = pluginContext;
@@ -14,7 +14,7 @@ namespace Wox.Plugin.Links {
 
         protected override void Load(ContainerBuilder container) {
             base.Load(container);
-            container.RegisterInstance(_pluginContext).As<IPluginContext>();
+            container.RegisterInstance(_pluginContext).As<IPluginContext>().SingleInstance();
             container.RegisterType<Engine>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<SettingsProvider>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<Storage>().As<IStorage>().SingleInstance();

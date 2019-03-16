@@ -9,33 +9,33 @@ using Xunit;
 namespace Wox.Links.Tests.Parsers {
     public class ImportParserTests {
         public ImportParserTests() {
-            _storage = Substitute.For<IStorage>();
+            var storage = Substitute.For<IStorage>();
             _fileService = Substitute.For<IFileService>();
-            _saveParser = new ImportParser(_storage, _fileService);
-            _queryInstance = new QueryInstance(@"link C:\file.json", new[] {"link", FilePath});
+            _saveParser = new ImportParser(storage, _fileService);
+            _queryInstance = @"link".CreateQuery(@"C:\file.json");
         }
 
         private const string FilePath = @"C:\file.json";
         private readonly ImportParser _saveParser;
-        private readonly IStorage _storage;
         private readonly IFileService _fileService;
-        private readonly QueryInstance _queryInstance;
+        private readonly IQuery _queryInstance;
 
         [Fact]
         public void ImportedFileExisting_ReturnFalse() {
-            _fileService.Exists(FilePath).Should().BeTrue();
+            _fileService.Exists(FilePath).Returns(true);
+            _fileService.GetExtension(FilePath).Returns(".json");
             _saveParser.TryParse(_queryInstance, out var results).Should()
                 .BeTrue();
             results.Should().HaveCount(1);
-            results.Single().Title.Should().Be("Import configuration file and replace current");
+            results.Single().Title.Should().Be("Import configuration file 'file.json' and replace current");
         }
 
         [Fact]
         public void ImportedFileNotExisting_ReturnFalse() {
+            _fileService.Exists(FilePath).Returns(false);
+
             _saveParser.TryParse(_queryInstance, out var results).Should()
-                .BeTrue();
-            results.Should().HaveCount(1);
-            results.Single().Title.Should().Be("Import configuration file and replace current");
+                .BeFalse();
         }
     }
 }

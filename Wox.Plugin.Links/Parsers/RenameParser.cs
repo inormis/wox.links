@@ -4,32 +4,32 @@ using System.Linq;
 using Wox.Plugins.Common;
 
 namespace Wox.Plugin.Links.Parsers {
-    public class RenameParser : BaseCommandParser {
+    public class RenameParser : BaseParser {
         private readonly IStorage _storage;
 
         public RenameParser(IStorage storage) : base("rename") {
             _storage = storage;
         }
 
-        protected override List<Result> Execute(string[] termsArguments) {
-            if (termsArguments.Length == 0) {
+        protected override List<Result> Execute(IQuery query) {
+            if (query.Arguments.Length == 0) {
                 return GetErrorResult("Pass the new name of shortcut");
             }
 
-            var newName = termsArguments.First();
+            var newName = query.Arguments.First();
 
-            if (termsArguments.Length == 1) {
+            if (query.Arguments.Length == 1) {
                 return GetErrorResult("Pass a name of the link to be updated");
             }
 
-            if (termsArguments.Length > 2) {
+            if (query.Arguments.Length > 2) {
                 return GetErrorResult("One or two arguments have to be specified argument has to be specified");
             }
 
             if (_storage.TryGetByShortcut(newName, out Link existingLink))
                 return GetErrorResult($"Shortcut [{newName}] already exists", existingLink.Description);
             
-            var existingShortCut = termsArguments[1];
+            var existingShortCut = query.Arguments[1];
             
             var predicate = string.IsNullOrWhiteSpace(existingShortCut)
                 ? (Func<string, bool>) (s => true)

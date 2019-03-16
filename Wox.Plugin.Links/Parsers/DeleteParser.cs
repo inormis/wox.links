@@ -4,19 +4,19 @@ using System.Linq;
 using Wox.Plugins.Common;
 
 namespace Wox.Plugin.Links.Parsers {
-    public class DeleteParser : BaseCommandParser {
+    public class DeleteParser : BaseParser {
         private readonly IStorage _storage;
 
         public DeleteParser(IStorage storage) : base("delete") {
             _storage = storage;
         }
 
-        protected override List<Result> Execute(string[] termsArguments) {
-            if (termsArguments.Length >=2) {
+        protected override List<Result> Execute(IQuery query) {
+            if (query.Arguments.Length >=2) {
                 return GetErrorResult("Only one argument has to be specified");
             }
 
-            var arg = termsArguments.SingleOrDefault();
+            var arg = query.Arguments.SingleOrDefault();
 
             var predicate = string.IsNullOrWhiteSpace(arg)
                 ? (Func<string, bool>) (s => true)
@@ -24,8 +24,8 @@ namespace Wox.Plugin.Links.Parsers {
             return _storage.GetShortcuts()
                 .Where(link => predicate(link.Shortcut))
                 .Select(x => new Result {
-                    Title = x.Shortcut,
-                    SubTitle = $"DELETE shortcut [{x.Shortcut}]",
+                    Title = $"Delete '{x.Shortcut}' link",
+                    SubTitle = x.Path,
                     Action = context => {
                         _storage.Delete(x.Shortcut);
                         return true;

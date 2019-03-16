@@ -32,7 +32,7 @@ namespace Wox.Plugins.KeePass.Tests.Parsers {
         [Fact]
         public void PassingKdbxFilePath_UpdatesStorage() {
             _fileService.Exists(FilePath).Returns(true);
-            _fileService.CheckExtension(FilePath, ".kdbx").Returns(true);
+            _fileService.GetExtension(FilePath).Returns(".kdbx");
             var tryParse = parser
                 .TryParse(FilePath, out var results);
             tryParse.Should().BeTrue();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Wox.Plugin;
 using Wox.Plugins.Common;
 
@@ -41,7 +42,8 @@ namespace Wox.Plugins.KeePass.Parsers {
         }
 
         private bool TryToGetFilePath(string query) {
-            return _fileService.Exists(query) && _fileService.CheckExtension(query, ".kdbx");
+            return _fileService.Exists(query) && string.Compare(_fileService.GetExtension(query), ".kdbx",
+                       StringComparison.CurrentCultureIgnoreCase) == 0;
         }
     }
 }

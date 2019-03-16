@@ -13,12 +13,12 @@ namespace Wox.Plugins.KeePass {
     }
 
     internal class Storage : IStorage {
-        private readonly IPluginContext _context;
+        private readonly IPluginContext _pluginContext;
         private readonly string _directory;
 
-        public Storage(IPluginContext context) {
-            _context = context;
-            _directory = _context.Directory;
+        public Storage(IPluginContext pluginContext) {
+            _pluginContext = pluginContext;
+            _directory = _pluginContext.Directory;
 
             KeePath = Load();
         }

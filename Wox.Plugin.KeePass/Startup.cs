@@ -8,9 +8,9 @@ namespace Wox.Plugins.KeePass {
     public class Startup {
         private static IContainer _container;
 
-        public static void Initialize(IPluginContext IPluginContext) {
+        public static void Initialize(IPluginContext pluginContext) {
             var container = new ContainerBuilder();
-            container.RegisterInstance(IPluginContext).AsSelf();
+            container.RegisterInstance(pluginContext).As<IPluginContext>();
             container.RegisterType<Engine>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<Configuration>().AsImplementedInterfaces().SingleInstance();
             container.RegisterType<SettingsProvider>().AsImplementedInterfaces().SingleInstance();

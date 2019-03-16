@@ -18,9 +18,7 @@ namespace Wox.Links.Tests.Parsers {
 
         [Theory]
         [InlineData("--delete")]
-        [InlineData("--remove")]
         [InlineData("-d")]
-        [InlineData("-r")]
         public void DeleteWithShortcut_ReturnAllLinks(string key) {
             _storage.GetShortcuts().Returns(new[] {
                 new Link {
@@ -36,7 +34,7 @@ namespace Wox.Links.Tests.Parsers {
                     Shortcut = "google"
                 }
             });
-            _parser.TryParse(new QueryInstance(new Query {Terms = new[] {key}}), out var results).Should().BeTrue();
+            _parser.TryParse(key.CreateQuery(), out var results).Should().BeTrue();
             results.Should().HaveCount(3);
 
             results[0].Title.Should().Be("Delete 'Ad1' link");
@@ -56,11 +54,22 @@ namespace Wox.Links.Tests.Parsers {
         [InlineData("--del")]
         [InlineData("-remo")]
         [InlineData("-re")]
-        public void NotSaveKeyWord_ReturnFalse(string key) {
-            _parser.TryParse(new QueryInstance(new Query {Terms = new[] {key, "https://some.com/link", "Shortcut"}}),
-                    out var results).Should()
-                .BeFalse();
-            results.Should().HaveCount(0);
+        public void NotDeleteKeyWord_ReturnFalse(string key) {
+            _storage.GetShortcuts().Returns(new[] {
+                new Link {
+                    Shortcut = "Ad1",
+                    Path = "https://ad1"
+                },
+                new Link {
+                    Shortcut = "movie",
+                    Path = "https://movie"
+                },
+                new Link {
+                    Path = "https://gl",
+                    Shortcut = "google"
+                }
+            });
+            _parser.TryParse(key.CreateQuery(), out var results).Should().BeFalse();
         }
 
         [Fact]
@@ -79,7 +88,7 @@ namespace Wox.Links.Tests.Parsers {
                     Path = "https://gl"
                 }
             });
-            _parser.TryParse(new QueryInstance("", new[] {"-d", "mov"}), out var results).Should().BeTrue();
+            _parser.TryParse("-d".CreateQuery("mov"), out var results).Should().BeTrue();
             results.Should().HaveCount(2);
 
             results[1].Title.Should().Be("Delete 'movie' link");

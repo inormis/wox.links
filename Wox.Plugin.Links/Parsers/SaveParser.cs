@@ -5,34 +5,26 @@ using System.Text.RegularExpressions;
 using Wox.Plugins.Common;
 
 namespace Wox.Plugin.Links.Parsers {
-    public class SaveParser : IParser {
-        private static readonly Regex linkMatch = new Regex(@"^link\b|^-l\b", RegexOptions.IgnoreCase);
-
+    public class SaveParser : BaseParser {
         private readonly IStorage _storage;
 
-        public SaveParser(IStorage storage) {
+        public SaveParser(IStorage storage) : base(PluginKey) {
             _storage = storage;
         }
 
-        public bool TryParse(IQuery query, out List<Result> results) {
-            results = new List<Result>();
-            if (query.Terms.Length < 3) {
-                return false;
-            }
-
-            if (!linkMatch.IsMatch(query.Terms[0])) {
-                return false;
-            }
-
-            var shortcut = query.Terms[1];
-            var linkPath = query.Terms[2];
-            var description = query.Terms.Length > 2 ? string.Join(" ", query.Terms.Skip(3)) : "";
-
-            results.Add(CreateResult(shortcut, linkPath, description));
-            return true;
+        protected override bool CustomParse(IQuery query) {
+            return query.Arguments.Length >= 3;
         }
 
-        public ParserPriority Priority { get; } = ParserPriority.Normal;
+        protected override List<Result> Execute(IQuery query) {
+            
+            var shortcut = query.Arguments[0];
+            var linkPath = query.Arguments[1];
+            var description = query.Arguments.Length > 2 ? string.Join(" ", query.Arguments.Skip(2)) : "";
+            return new List<Result> {
+                CreateResult(shortcut, linkPath, description)
+            };;
+        }
 
         private Result CreateResult(string shortCut, string linkPath, string description) {
             Debug.WriteLine(shortCut + " => " + description);

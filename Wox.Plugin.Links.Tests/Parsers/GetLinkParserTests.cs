@@ -12,6 +12,7 @@ namespace Wox.Links.Tests.Parsers {
             _storage = Substitute.For<IStorage>();
             _linkProcess = Substitute.For<ILinkProcess>();
             _saveParser = new GetLinkParser(_storage, _linkProcess);
+            _storage.GetShortcuts().Returns(_links);
         }
 
         private readonly IStorage _storage;
@@ -44,19 +45,15 @@ namespace Wox.Links.Tests.Parsers {
 
         [Fact]
         public void InputIsWordWithCapitalCase_IgnoreMatchesOfLowerCase() {
-            _storage.GetShortcuts().Returns(_links);
-
-            _saveParser.TryParse(Helpers.CreateQuery("GC"), out var results).Should()
-                .BeTrue();
+            _saveParser.TryParse("GC".CreateQuery(), out var results)
+                .Should().BeFalse();
             results.Should().BeEmpty();
         }
 
         [Fact]
         public void InputIsWordWithCapitalCase_MatchByNameSplitByCapitalCases() {
-            _storage.GetShortcuts().Returns(_links);
-
-            _saveParser.TryParse(Helpers.CreateQuery("GA"), out var results).Should()
-                .BeTrue();
+            _saveParser.TryParse("GA".CreateQuery(), out var results)
+                .Should().BeTrue();
             results.Should().HaveCount(1);
 
             results[0].Title.Should().StartWith("[GoogleAction]");
@@ -64,9 +61,7 @@ namespace Wox.Links.Tests.Parsers {
 
         [Fact]
         public void MatchByName_ReturnFullUrl() {
-            _storage.GetShortcuts().Returns(_links);
-
-            _saveParser.TryParse(Helpers.CreateQuery("cut"), out var results).Should()
+            _saveParser.TryParse("cut".CreateQuery(), out var results).Should()
                 .BeTrue();
             results.Should().HaveCount(2);
 
@@ -87,7 +82,7 @@ namespace Wox.Links.Tests.Parsers {
                 }
             });
 
-            _saveParser.TryParse(Helpers.CreateQuery("cut", "8700"), out var results)
+            _saveParser.TryParse("cut".CreateQuery("8700"), out var results)
                 .Should().BeTrue();
 
 
@@ -106,7 +101,7 @@ namespace Wox.Links.Tests.Parsers {
                 }
             });
 
-            _saveParser.TryParse(Helpers.CreateQuery("cut"), out var results)
+            _saveParser.TryParse("cut".CreateQuery(), out var results)
                 .Should().BeTrue();
 
 

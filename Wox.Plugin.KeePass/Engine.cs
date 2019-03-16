@@ -6,13 +6,12 @@ namespace Wox.Plugins.KeePass {
     public class Engine : IEngine {
         private readonly IOpenKeePassParser _openKeePassParser;
         private readonly ISetKeePassPathParser _setKeePassPathParser;
-        private readonly IStorage _storage;
 
-        public Engine(IConfiguration configuration, IStorage storage,
-            IOpenKeePassParser openKeePassParser, ISetKeePassPathParser setKeePassPathParser) {
+        public Engine(IConfiguration configuration,
+            IOpenKeePassParser openKeePassParser, 
+            ISetKeePassPathParser setKeePassPathParser) {
             _openKeePassParser = openKeePassParser;
             _setKeePassPathParser = setKeePassPathParser;
-            _storage = storage;
             configuration.Initialize();
         }
 

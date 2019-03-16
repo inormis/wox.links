@@ -4,9 +4,9 @@ namespace Wox.Plugins.Common {
 
         bool Exists(string filePath);
 
-        bool CheckExtension(string filePath, string extension);
         void Start(string command, string args);
         bool WriteAllText(string filePath, string content);
         string ReadAllText(string path);
+        string GetExtension(string filePath);
     }
 }

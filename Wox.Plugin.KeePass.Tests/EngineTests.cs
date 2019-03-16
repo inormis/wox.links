@@ -12,7 +12,7 @@ namespace Wox.Plugins.KeePass.Tests {
             _storage = Substitute.For<IStorage>();
             _storage.KeePassPathIsConfigured.Returns(true);
             _configuration = Substitute.For<IConfiguration>();
-            _engine = new Engine(_configuration, _storage, Substitute.For<IOpenKeePassParser>(), _parser);
+            _engine = new Engine(_configuration, Substitute.For<IOpenKeePassParser>(), _parser);
         }
 
         private readonly Engine _engine;

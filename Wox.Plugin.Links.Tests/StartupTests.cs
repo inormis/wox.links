@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Autofac;
+using NSubstitute;
 using Wox.Plugin;
 using Wox.Plugin.Links;
 using Wox.Plugin.Links.Parsers;
@@ -8,21 +9,18 @@ using Xunit;
 
 namespace Wox.Links.Tests {
     public class StartupTests {
-        private IContainer _container;
-
         [Fact]
         public void Setup() {
-            Startup.Initialize(new PluginContext(new PluginInitContext()));
-
-            Startup.Resolve<IEnumerable<IParser>>();
-        }
-
-        public StartupTests() {
             var builder = new ContainerBuilder();
             builder.RegisterModule(new AutofacModule(new PluginContext(new PluginInitContext())));
-            _container = builder.Build();
+            var container = builder.Build();
+
+            var context = Substitute.For<IPluginContext>();
+            context.Directory.Returns(@"C:\PluginDirectory");
+            Startup.Initialize(context);
+
+            Startup.Resolve<IEnumerable<IParser>>();
+            Startup.Resolve<IEngine>();
         }
-        
-        
     }
 }

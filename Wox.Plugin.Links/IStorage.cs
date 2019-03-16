@@ -19,15 +19,13 @@ namespace Wox.Plugin.Links {
 
     internal class Storage : IStorage {
         private readonly Configuration _configuration;
-        private readonly IPluginContext _context;
         private readonly string _directory;
         private Dictionary<string, Link> _links;
-        private IFileService _fileService;
+        private readonly IFileService _fileService;
 
-        public Storage(IPluginContext context, IFileService fileService) {
+        public Storage(IPluginContext pluginContext, IFileService fileService) {
             _fileService = fileService;
-            _context = context;
-            _directory = _context.Directory;
+            _directory = pluginContext.Directory;
             _configuration = LoadConfiguration();
             _links = LoadLinks();
         }

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Wox.Plugins.Common;
 
 namespace Wox.Plugin.Links.Parsers {
-    public class ExportParser : BaseCommandParser {
+    public class ExportParser : BaseParser {
         private readonly IFileService _fileService;
 
         private readonly IStorage _storage;
@@ -14,7 +14,7 @@ namespace Wox.Plugin.Links.Parsers {
             _storage = storage;
         }
 
-        protected override List<Result> Execute(string[] termsArguments) {
+        protected override List<Result> Execute(IQuery query) {
             return new List<Result> {
                 new Result {
                     Title = "Export links as a json file",
