@@ -13,7 +13,7 @@ namespace Wox.Plugin.Links.Parsers {
         }
 
         protected override bool CustomParse(IQuery query) {
-            return query.Arguments.Length >= 3;
+            return query.Arguments.Length >= 2;
         }
 
         protected override List<Result> Execute(IQuery query) {

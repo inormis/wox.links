@@ -16,20 +16,22 @@ namespace Wox.Links.Tests.Parsers {
         }
 
         [Theory]
-        [InlineData("-l")]
-        [InlineData("link")]
-        public void SaveTerms_ReturnTrueAndProposeToSave(string key) {
-            _saveParser.TryParse(key.CreateQuery("Shortcut https://some.com/link-{@@} my description"),
+        [InlineData("-l", "")]
+        [InlineData("-l", "this is nice")]
+        [InlineData("link", "")]
+        [InlineData("link", "some nice description")]
+        public void SaveTerms_ReturnTrueAndProposeToSave(string key, string description="") {
+            _saveParser.TryParse(key.CreateQuery("Shortcut https://some.com/link-{@@} "+description),
                     out var results)
                 .Should().BeTrue();
             results.Should().HaveCount(1);
 
             var result = results[0];
-            result.Title.Should().Be("Save the link as 'Shortcut': 'my description'");
+            result.Title.Should().Be($"Save the link as 'Shortcut': '{description}'");
             result.SubTitle.Should().Be("https://some.com/link-{@@}");
 
             result.Action(new ActionContext());
-            _storage.Received(1).Set("Shortcut", "https://some.com/link-{@@}", "my description");
+            _storage.Received(1).Set("Shortcut", "https://some.com/link-{@@}", description);
         }
 
         [Theory]
